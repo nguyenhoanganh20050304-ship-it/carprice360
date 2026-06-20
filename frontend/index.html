@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarPrice360 - Tìm kiếm & So sánh Ô tô</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red: #E8002D;
+      --dark: #0F0F1A;
+      --navy: #1A1A3E;
+      --white: #FFFFFF;
+      --gray: #F5F5F7;
+      --text: #1D1D1F;
+      --muted: #6E6E73;
+      --border: #E0E0E5;
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; background: var(--white); color: var(--text); }
+
+    /* ── HEADER ── */
+    header {
+      background: rgb(16, 137, 197); /* Sửa lỗi màu xanh đồng bộ */
+      position: sticky; 
+      top: 0; 
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,.15);
+    }
+
+    .header-top {
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      padding: 0 40px; 
+      height: 64px;
+    }
+
+    .logo { 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      text-decoration: none; 
+    }
+
+    .logo-icon {
+      width: 36px; 
+      height: 36px; 
+      background: var(--white); 
+      color: rgb(16, 137, 197); 
+      border-radius: 8px;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      font-size: 18px; 
+      font-weight: 900;
+    }
+
+    .logo-text { 
+      font-size: 20px; 
+      font-weight: 700; 
+      color: white; 
+      letter-spacing: -.5px; 
+    }
+    /* ── MENU ĐƯỜNG DẪN ── */
+    nav { 
+      display: flex; 
+      gap: 8px; 
+    }
+
+    nav a {
+      background: #FFFFFF;        /* Nền trắng tinh */
+      border: 1.5px solid #E0E0E5; /* Viền xám nhẹ giống nút đăng nhập */
+      color: #0F0F1A;             /* Chữ đen */
+      text-decoration: none;   
+      padding: 8px 16px; 
+      border-radius: 8px;         
+      font-size: 14px; 
+      font-weight: 600;
+      display: inline-block;   
+      transition: all 0.25s ease;  /* Hiệu ứng mượt mà */
+    }
+
+    /* Hiệu ứng nổi lên khi di chuột HOẶC khi đang được bấm chọn */
+    nav a:hover, nav a.active { 
+      background: #FFFFFF !important; 
+      border-color: #0F0F1A !important; 
+      color: #0F0F1A !important;
+      transform: translateY(-3px); /* Nhích lên 3px */
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12) !important; /* Đổ bóng nổi khối */
+    }
+
+    /* ── CÁC NÚT ĐĂNG NHẬP / ĐĂNG KÝ ── */
+    .header-actions { 
+      display: flex; 
+      gap: 10px; 
+      align-items: center;
+    }
+
+    .btn-login {
+      padding: 8px 20px; 
+      border-radius: 8px; 
+      font-size: 14px; 
+      font-weight: 600;
+      cursor: pointer; 
+      transition: all 0.25s ease; 
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline { 
+      background: #FFFFFF; 
+      border: 1.5px solid #E0E0E5; 
+      color: #0F0F1A; 
+    }
+
+    .btn-outline:hover { 
+      background: #FFFFFF;
+      border-color: #0F0F1A;
+      color: #0F0F1A;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    }
+
+    .btn-solid { 
+      background: var(--red); 
+      border: 1.5px solid var(--red); 
+      color: white; 
+    }
+
+    .btn-solid:hover { 
+      background: #c8001f; 
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(232,0,45,0.2);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background-image: url('image/nen/anhnen.jpg'); 
+      background-size: cover;
+      background-position: 50% 67%;
+      background-repeat: no-repeat;
+      min-height: 415px;
+      padding: 0;
+      text-align: center;
+      position: relative;
+    }
+    .search-box {
+      background: rgb(16, 137, 197);
+      border-radius: 16px;
+      padding: 20px;
+      width: 890px;
+      max-width: 90%;
+      position: absolute;
+      left: 50%;
+      bottom: -97px;
+      transform: translateX(-50%);
+      box-shadow: 0 10px 30px rgba(0,0,0,.15);
+      z-index: 10;
+    }
+    .search-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .search-input {
+      flex: 1; padding: 12px 18px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 15px; outline: none; transition: border .2s;
+    }
+    .search-input:focus { border-color: var(--text); }
+    .btn-search {
+      padding: 12px 28px; background: var(--red); color: white;
+      border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background .2s; white-space: nowrap;
+    }
+    .btn-search:hover { background: #c8001f; }
+
+    .filter-row { display: flex; gap: 10px; }
+    .filter-select {
+      flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 14px; outline: none; cursor: pointer;
+      background: white; transition: border .2s;
+    }
+    .filter-select:focus{
+    border-color: rgb(16, 137, 197);
+}
+
+    /* ── STATS ── */
+    .stats {
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: space-around; 
+      align-items: center;
+      max-width: 1200px; 
+      margin: 20px auto;
+      background: var(--gray);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      padding: 14px 40px; /* Giảm chiều cao */
+      margin-top: 110px; /* Đẩy khoảng cách lên vừa vặn */
+    }
+    .stats-title {
+      width: 100%; 
+      text-align: center; 
+      margin-bottom: 10px; /* Giảm khoảng cách */
+    }
+    .stats-title h1 {
+      font-size: 20px; 
+      font-weight: 700; 
+      color:red;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 800; color: var(--red); }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* ── SECTION ── */
+    .section { padding: 52px 40px; max-width: 1300px; margin: 0 auto; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .section-title { font-size: 24px; font-weight: 700; }
+    .section-title span { color: var(--red); }
+    .see-all {
+      font-size: 14px; color: var(--red); text-decoration: none; font-weight: 600;
+    }
+    .see-all:hover { text-decoration: underline; }
+
+    /* ── CAR GRID ── */
+    .car-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .car-card {
+      background: white; border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; transition: all .25s; cursor: pointer;
+    }
+    .car-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.12);
+      border-color: var(--red);
+    }
+    .car-img {
+      width: 100%; height: 160px; object-fit: cover;
+      background: linear-gradient(135deg, #f0f0f5 0%, #e0e0ea 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px;
+    }
+    .car-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .car-body { padding: 14px 16px; }
+    .car-brand {
+      font-size: 11px; font-weight: 700; color: var(--red);
+      text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px;
+    }
+    .car-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .car-price { font-size: 18px; font-weight: 800; color: var(--red); margin-bottom: 10px; }
+    .car-specs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .spec-tag {
+      background: var(--gray); border-radius: 4px;
+      padding: 3px 8px; font-size: 11px; color: var(--muted); font-weight: 500;
+    }
+    .spec-tag.fuel-dien { background: #e8f5e9; color: #2e7d32; }
+    .spec-tag.fuel-hybrid { background: #e3f2fd; color: #1565c0; }
+
+    /* ── LOADING ── */
+    .loading { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--muted); font-size: 16px; }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid var(--border);
+      border-top-color: var(--red); border-radius: 50%;
+      animation: spin .8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── BRANDS ── */
+    .brands-section {
+      background: #f5f6fa; padding: 40px; margin: 40px auto;
+      max-width: 1200px; border-radius: 24px; border: 1px solid #e5e7eb;
+      margin-top: 60px; /* Thu gọn khoảng cách kéo lên */
+    }
+    .brands-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 32px; }
+    .brands-title span { color: var(--red); }
+    .brands-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+      max-width: 1000px; margin: 0 auto;
+    }
+    .brand-card {
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all .2s;
+    }
+    .brand-card:hover {
+      border-color: var(--red); box-shadow: 0 8px 24px rgba(232,0,45,.1); transform: translateY(-3px);
+    }
+    .brand-card img { width: 100%; height: 80px; object-fit: contain; margin-bottom: 10px; }
+    .brand-card span { font-size: 14px; font-weight: 600; color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); color: rgba(255,255,255,.5); text-align: center; padding: 24px; font-size: 13px; }
+    footer span { color: var(--red); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 36px; width: 420px; max-width: 90vw; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+    .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+    .modal-input {
+      width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; margin-bottom: 12px; outline: none; transition: border .2s;
+    }
+    .modal-input:focus { border-color: var(--red); }
+    .modal-btn {
+      width: 100%; padding: 13px; background: var(--red); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; margin-top: 4px;
+    }
+    .modal-btn:hover { background: #c8001f; }
+    .modal-close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; margin-top: -8px; }
+    .modal-switch { text-align: center; margin-top: 16px; font-size: 14px; color: var(--muted); }
+    .modal-switch a { color: var(--red); cursor: pointer; font-weight: 600; }
+    .msg { font-size: 13px; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; display: none; }
+    .msg.error { background: #fff0f0; color: #c00; border: 1px solid #fcc; display: block; }
+    .msg.success { background: #f0fff4; color: #1a7a3a; border: 1px solid #b2dfca; display: block; }
+
+    #brands, #cars {
+  scroll-margin-top: 110px !important; 
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a href="#" class="logo" id="logo-home">
+      <div class="logo-icon">C</div>
+      <span class="logo-text">Car<span>Price</span>360</span>
+    </a>
+    <nav>
+      <a href="#" class="active">Trang chủ</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('brands')">Thương hiệu</a> 
+      <a href="javascript:void(0)" onclick="scrollToSection('cars')">Danh sách xe</a>  
+      <a href="compare.html">So sánh xe</a>
+    </nav>
+    <div class="header-actions" id="headerActions">
+      <a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
+      <a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="search-box">
+    <div class="search-row">
+      <input class="search-input" id="searchInput" placeholder="🔍  Tìm kiếm tên xe, thương hiệu..." oninput="filterCars()">
+      <button class="btn-search" onclick="document.getElementById('cars')?.scrollIntoView({ behavior: 'smooth' }); filterCars();">Tìm ngay</button>
+    </div>
+    <div class="filter-row">
+      <select class="filter-select" id="filterBrand" onchange="filterCars()">
+        <option value="">Chọn thương hiệu</option>
+        <option>Mercedes</option><option>Audi</option><option>BMW</option>
+        <option>Porsche</option><option>Toyota</option><option>Lexus</option>
+        <option>Kia</option><option>Hyundai</option><option>Ford</option><option>VinFast</option>
+      </select>
+      <select class="filter-select" id="filterType" onchange="filterCars()">
+        <option value="">Chọn dòng xe</option>
+        <option>Sedan</option><option>SUV</option><option>Coupe</option>
+        <option>MPV</option><option>Pickup</option>
+      </select>
+      <select class="filter-select" id="filterFuel" onchange="filterCars()">
+        <option value="">Chọn Động cơ </option>
+        <option value="Xăng">Xăng</option>
+        <option value="Điện">Điện</option>
+        <option value="Hybrid">Hybrid</option>
+        <option value="Dầu">Dầu</option>
+      </select>
+      <select class="filter-select" id="filterPrice" onchange="filterCars()">
+        <option value="">Giá</option>
+        <option value="0-1000">Dưới 1 tỷ</option>
+        <option value="1000-2000">1 - 2 tỷ</option>
+        <option value="2000-5000">2 - 5 tỷ</option>
+        <option value="5000-99999">Trên 5 tỷ</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stats-title"><h1>Bạn cần chọn xe?</h1></div>
+  <div class="stat"><div class="stat-num" id="totalCars">40</div><div class="stat-label">Mẫu xe</div></div>
+  <div class="stat"><div class="stat-num" id="totalBrands">—</div><div class="stat-label">Thương hiệu</div></div>
+  <div class="stat"><div class="stat-num" id="totalFuels">—</div><div class="stat-label">Loại động cơ</div></div>
+  <div class="stat"><div class="stat-num" id="totalTypes">—</div><div class="stat-label">Dòng xe</div></div>
+</div>
+
+<div class="brands-section" id="brands">
+  <div class="brands-title"><span>Thương hiệu</span></div>
+  <div class="brands-grid" id="brandsGrid">
+      <div class="loading">Đang tải thương hiệu...</div>
+    </div>
+  </div>
+
+  <div class="section" id="cars">
+  <div class="section-header">
+    <h2 class="section-title"><span> Danh sách ô tô</span> </h2>
+    <span id="resultCount" style="color:var(--muted);font-size:14px"></span>
+  </div>
+  <div class="car-grid" id="carGrid">
+    <div class="loading"><div class="spinner"></div>Đang tải dữ liệu xe...</div>
+  </div>
+</div>
+
+<footer>
+  © 2026 <span>CarPrice360</span> — Nền tảng tìm kiếm & so sánh ô tô Việt Nam
+</footer>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('login')">×</span>
+    <h2>Đăng nhập</h2>
+    <div class="msg" id="loginMsg"></div>
+    <input class="modal-input" id="loginEmail" type="email" placeholder="Email" autocomplete="off">
+    <input class="modal-input" id="loginPass" type="password" placeholder="Mật khẩu" autocomplete="off">
+    <button class="modal-btn" onclick="doLogin()">Đăng nhập</button>
+    <div class="modal-switch">Chưa có tài khoản? <a onclick="switchModal('login','register')">Đăng ký ngay</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('register')">×</span>
+    <h2>Đăng ký tài khoản</h2>
+    <div class="msg" id="registerMsg"></div>
+    <input class="modal-input" id="regName" type="text" placeholder="Họ và tên">
+    <input class="modal-input" id="regEmail" type="email" placeholder="Email">
+    <input class="modal-input" id="regPass" type="password" placeholder="Mật khẩu">
+    <button class="modal-btn" onclick="doRegister()">Đăng ký</button>
+    <div class="modal-switch">Đã có tài khoản? <a onclick="switchModal('register','login')">Đăng nhập</a></div>
+  </div>
+</div>
+
+<script>
+  // Tìm nút Trang chủ trong menu của bạn (bằng cách quét qua các thẻ chứa chữ "Trang chủ")
+const các_nút_menu = document.querySelectorAll('nav a, header a');
+các_nút_menu.forEach(nut => {
+    if (nut.textContent.trim() === "Trang chủ") {
+        nut.addEventListener('click', function(e) {
+            e.preventDefault(); // Ngăn việc nhảy trang mặc định
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Cuộn mượt mà lên đầu trang
+            });
+        });
+    }
+});
+const API = 'http://localhost:8080/api';
+let allCars = [];
+let currentUser = null;
+const fuelEmoji = { 'Xăng':'⛽', 'Điện':'⚡', 'Hybrid':'🌿', 'Dầu':'🛢️' };
+function getCarImage(car) {
+  return car && car.hinhAnh ? car.hinhAnh + '1.png' : '';
+}
+
+// Đợi toàn bộ HTML tải xong để xử lý chuyển class active khi bấm nút
+document.addEventListener("DOMContentLoaded", function() {
+  const menuItems = document.querySelectorAll('nav a');
+  const logoHome = document.getElementById('logo-home');
+
+  // 1. Khi bấm vào các nút Menu điều hướng
+  menuItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      if (this.getAttribute('href') === '#' || this.getAttribute('href') === '') {
+        e.preventDefault();
+      }
+      menuItems.forEach(nav => nav.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // 2. Khi bấm vào Logo CarPrice360 thì nhảy về Trang chủ
+  if (logoHome) {
+    logoHome.addEventListener('click', function(e) {
+      menuItems.forEach(nav => nav.classList.remove('active'));
+      if (menuItems.length > 0) {
+        menuItems[0].classList.add('active'); // Kích hoạt nút đầu tiên (Trang chủ)
+      }
+    });
+  }
+});
+
+
+/* ─── Logo thương hiệu (thêm dòng mới khi có brand mới) ─── */
+const brandLogos = {
+  'Audi':     'image/cars/audi/logo/logo-audi.png',
+  'BMW':      'image/cars/bmw/logo/logo-bmw.png',
+  'Ford':     'image/cars/ford/logo/logo-ford.png',
+  'Hyundai':  'image/cars/hyundai/logo/logo-hyundai.png',
+  'Kia':      'image/cars/kia/logo/logo-kia.png',
+  'Lexus':    'image/cars/lexus/logo/logo-lexus.png',
+  'Mercedes': 'image/cars/mercedes-benz/logo/logo-mercedes-benz.png',
+  'Porsche':  'image/cars/porsche/logo/logo-porsche.png',
+  'Toyota':   'image/cars/toyota/logo/logo-toyota.png',
+  'VinFast':  'image/cars/vinFast/logo/logo-vinfast.png',
+};
+
+/* ─── Render danh sách thương hiệu động từ API ─── */
+function renderBrands(cars) {
+  const brands = [...new Set(cars.map(c => c.thuongHieu))].sort();
+  const grid = document.getElementById('brandsGrid');
+  if (!grid) return;
+  grid.innerHTML = brands.map(brand => `
+    <div class="brand-card" onclick="filterByBrand('${brand}')">
+      ${brandLogos[brand]
+        ? `<img src="${brandLogos[brand]}" alt="${brand}" onerror="this.style.display='none'">`
+        : `<div style="font-size:28px">🚗</div>`}
+      <span>${brand}</span>
+    </div>
+  `).join('');
+
+  // Cập nhật stats động
+  const fuels = [...new Set(cars.map(c => c.nhienLieu))];
+  const types = [...new Set(cars.map(c => c.loaiXe))];
+  const elBrands = document.getElementById('totalBrands');
+  const elFuels  = document.getElementById('totalFuels');
+  const elTypes  = document.getElementById('totalTypes');
+  if (elBrands) elBrands.textContent = brands.length;
+  if (elFuels)  elFuels.textContent  = fuels.length;
+  if (elTypes)  elTypes.textContent  = types.length;
+}
+
+// Load cars từ API
+async function loadCars() {
+  try {
+    const res = await fetch(`${API}/cars`);
+    allCars = await res.json();
+    document.getElementById('totalCars').textContent = allCars.length;
+    renderCars(allCars);
+    renderBrands(allCars);
+  } catch (e) {
+    document.getElementById('carGrid').innerHTML =
+      '<div class="loading" style="color:#c00">⚠️ Không thể kết nối server. Hãy đảm bảo backend đang chạy.</div>';
+  }
+}
+
+function formatPrice(gia) {
+  if (gia >= 1000) return (gia / 1000).toFixed(gia % 1000 === 0 ? 0 : 1) + ' tỷ';
+  return gia + ' triệu';
+}
+
+function renderCars(cars) {
+  const grid = document.getElementById('carGrid');
+  document.getElementById('resultCount').textContent = `${cars.length} xe được tìm thấy`;
+  if (cars.length === 0) {
+    grid.innerHTML = '<div class="loading">🔍 Không tìm thấy xe phù hợp</div>';
+    return;
+  }
+  grid.innerHTML = cars.map(car => `
+    <div class="car-card" onclick="location.href='cardetail.html?id=${car.id}'">
+      <div class="car-img">
+      <img src="${getCarImage(car)}" alt="${car.tenXe}" onerror="this.style.display='none'"></div>
+      <div class="car-body">
+        <div class="car-brand">${car.thuongHieu}</div>
+        <div class="car-name">${car.tenXe}</div>
+        <div class="car-price">${formatPrice(car.gia)}</div>
+        <div class="car-specs">
+          <span class="spec-tag">${car.loaiXe}</span>
+          <span class="spec-tag fuel-${car.nhienLieu === 'Điện' ? 'dien' : car.nhienLieu === 'Hybrid' ? 'hybrid' : ''}">${fuelEmoji[car.nhienLieu] || ''} ${car.nhienLieu}</span>
+          <span class="spec-tag">👥 ${car.soCho} chỗ</span>
+          <span class="spec-tag">⚡ ${car.maLuc} HP</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCars() {
+  const keyword = document.getElementById('searchInput').value.toLowerCase();
+  const brand = document.getElementById('filterBrand').value;
+  const type = document.getElementById('filterType').value;
+  const fuel = document.getElementById('filterFuel').value;
+  const price = document.getElementById('filterPrice').value;
+
+  let filtered = allCars.filter(car => {
+    const matchKey = !keyword || car.tenXe.toLowerCase().includes(keyword) || car.thuongHieu.toLowerCase().includes(keyword);
+    const matchBrand = !brand || car.thuongHieu === brand;
+    const matchType = !type || car.loaiXe === type;
+    const matchFuel = !fuel || car.nhienLieu === fuel;
+    let matchPrice = true;
+    if (price) {
+      const [min, max] = price.split('-').map(Number);
+      matchPrice = car.gia >= min && car.gia <= max;
+    }
+    return matchKey && matchBrand && matchType && matchFuel && matchPrice;
+  });
+  renderCars(filtered);
+}
+
+function filterByBrand(brand) {
+  document.getElementById('filterBrand').value = brand;
+  document.getElementById('cars').scrollIntoView({ behavior: 'smooth' });
+  
+  // Tự động kích hoạt nút "Tìm xe" khi người dùng chọn thương hiệu nhanh
+  const menuItems = document.querySelectorAll('nav a');
+  if(menuItems.length > 1) {
+    menuItems.forEach(nav => nav.classList.remove('active'));
+    menuItems[1].classList.add('active');
+  }
+  
+  filterCars();
+}
+
+// Modal
+function openModal(type) {
+
+    if(type === 'login'){
+        document.getElementById('loginEmail').value = '';
+        document.getElementById('loginPass').value = '';
+        document.getElementById('loginMsg').className = 'msg';
+        document.getElementById('loginMsg').textContent = '';
+    }  
+    // Dọn dẹp dữ liệu cho form Đăng ký mỗi khi mở lên
+    if(type === 'register'){
+        document.getElementById('regName').value = '';
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPass').value = '';
+        
+// Ẩn dòng thông báo màu xanh/đỏ cũ đi và xóa chữ bên trong
+        const regMsg = document.getElementById('registerMsg');
+        regMsg.className = 'msg'; 
+        regMsg.textContent = '';
+    }
+
+    document.getElementById(type + 'Modal').classList.add('open');
+}
+function closeModal(type) { document.getElementById(type + 'Modal').classList.remove('open'); }
+function switchModal(from, to) { closeModal(from); openModal(to); }
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const matKhau = document.getElementById('loginPass').value;
+  const msg = document.getElementById('loginMsg');
+
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        matKhau
+      })
+    });
+
+    const data = await res.json();
+
+    console.log(data); // Kiểm tra dữ liệu trả về
+
+    if (data.success) {
+      // Nếu là Admin thì chuyển sang trang admin
+      if (data.vaiTro === "ADMIN") {
+        window.location.href = "admin.html";
+        return;
+      }
+      // Người dùng thường
+      currentUser = data;
+      localStorage.setItem("loggedInUser", JSON.stringify(data));
+      closeModal('login');
+
+      document.getElementById('headerActions').innerHTML =
+        `<span style="color:white;padding:8px 14px;font-size:14px">
+            👋 ${data.hoTen}
+         </span>
+         <a class="btn-login btn-outline" onclick="logout()">
+            Đăng xuất
+         </a>`;
+    } else {
+      msg.className = 'msg error';
+      msg.textContent = data.message;
+    }
+
+  } catch (error) {
+    msg.className = 'msg error';
+    msg.textContent = 'Lỗi kết nối server!';
+    console.error(error);
+  }
+}
+async function doRegister() {
+  const hoTen = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const matKhau = document.getElementById('regPass').value;
+  const msg = document.getElementById('registerMsg');
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hoTen, email, matKhau })
+    });
+    const data = await res.json();
+    if (data.success) {
+      msg.className = 'msg success'; msg.textContent = 'Đăng ký thành công! Đang chuyển đến đăng nhập...';
+      setTimeout(() => switchModal('register', 'login'), 1500);
+    } else {
+      msg.className = 'msg error'; msg.textContent = data.message;
+    }
+  } catch { msg.className = 'msg error'; msg.textContent = 'Lỗi kết nối server!'; }
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem("loggedInUser");
+  document.getElementById('headerActions').innerHTML =
+    `<a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
+     <a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>`;
+}
+  function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const yOffset = -80; // chỉnh theo chiều cao header
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({
+          top: y,
+          behavior: "smooth"
+      });
+  }
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+function restoreSession() {
+  const saved = localStorage.getItem("loggedInUser");
+  if (!saved) return;
+  currentUser = JSON.parse(saved);
+  document.getElementById('headerActions').innerHTML = `
+    <span style="color:white;padding:8px 14px;font-size:14px">👋 ${currentUser.hoTen}</span>
+    <a class="btn-login btn-outline" onclick="logout()">Đăng xuất</a>`;
+}
+
+restoreSession();
+loadCars();
+</script>
+</body>
+</html>
