@@ -56,8 +56,35 @@ public class CarService {
 
     // Sửa xe (admin)
     public Car updateCar(Integer id, Car car) {
-        car.setId(id);
-        return carRepository.save(car);
+        Car existing = carRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Xe không tồn tại: " + id));
+        existing.setTenXe(car.getTenXe());
+        existing.setThuongHieu(car.getThuongHieu());
+        existing.setLoaiXe(car.getLoaiXe());
+        existing.setGia(car.getGia());
+        existing.setSoCho(car.getSoCho());
+        existing.setNhienLieu(car.getNhienLieu());
+        existing.setMaLuc(car.getMaLuc());
+        existing.setTieuThu(car.getTieuThu());
+        existing.setDanDong(car.getDanDong());
+        existing.setHopSo(car.getHopSo());
+        existing.setSoTuiKhi(car.getSoTuiKhi());
+        existing.setAbsSystem(car.getAbsSystem());
+        existing.setEbdSystem(car.getEbdSystem());
+        existing.setHacSystem(car.getHacSystem());
+        existing.setCameraLui(car.getCameraLui());
+        existing.setCamBienDoXe(car.getCamBienDoXe());
+        existing.setCruiseControl(car.getCruiseControl());
+        existing.setManHinh(car.getManHinh());
+        existing.setDieuHoa(car.getDieuHoa());
+        existing.setGheDien(car.getGheDien());
+        existing.setCuaSoTroi(car.getCuaSoTroi());
+        existing.setSmartEntry(car.getSmartEntry());
+        existing.setSacKd(car.getSacKd());
+        if (car.getHinhAnh() != null && !car.getHinhAnh().isBlank()) {
+            existing.setHinhAnh(car.getHinhAnh());
+        }
+        return carRepository.save(existing);
     }
 
     // Xóa xe (admin)

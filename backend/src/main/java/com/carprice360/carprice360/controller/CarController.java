@@ -146,9 +146,9 @@ public class CarController {
     private String sanitize(String name) {
         if (name == null) return "unknown";
         return name.toLowerCase()
-                .replaceAll("[^a-z0-9\\-]", "-")
-                .replaceAll("-{2,}", "-")
-                .replaceAll("^-|-$", "");
+                .replaceAll("[^a-z0-9 ]", "")   // ← chỉ giữ chữ, số, dấu cách
+                .replaceAll(" {2,}", " ")         // ← nhiều cách liên tiếp → 1 cách
+                .trim();
     }
 
     private String getExtension(String filename) {
