@@ -1,0 +1,30 @@
+
+
+
+
+ID	
+Ch?c nãng	
+Ðý?ng ði /nhánh ki?m th?	
+D? li?u ð?u vào	
+K?t qu? mong ð?i	
+K?t qu? th?c t?
+TC01	Ðãng k?	Nhánh email chýa t?n t?i	newuser@gmail.com	T?o user thành công, vai tr? USER	PASS
+TC02	Ðãng k?	Nhánh email ð? t?n t?i	test@gmail.com	Ném ngo?i l? "Email ð? t?n t?i!"	PASS
+TC03	Phân quy?n	Nhánh email = admin360@gmail.com	admin360@gmail.com	Vai tr? ADMIN	PASS
+TC04	Phân quy?n	Nhánh email vi?t hoa/thý?ng	ADMIN360@GMAIL.COM	Vai tr? ADMIN	FAIL
+TC05	M? hóa m?t kh?u	Nhánh g?i encode()	plainPass	M?t kh?u ðý?c m? hóa, b?t ð?u b?ng $2a$	PASS
+TC06	Ðãng nh?p	Nhánh ðúng email + m?t kh?u	test@gmail.com / password123	Tr? v? ð?i tý?ng User	PASS
+TC07	Ðãng nh?p	Nhánh email không t?n t?i	ghost@gmail.com	Tr? v? None	PASS
+TC08	Ðãng nh?p	Nhánh sai m?t kh?u	test@gmail.com / wrongPassword	Tr? v? None	PASS
+TC09	Ðãng nh?p	Ki?m tra d? li?u tr? v?	correct@gmail.com / pass999	Ðúng h? tên và vai tr? USER	PASS
+TC10	Kh?i t?o User	Giá tr? m?c ð?nh	User m?i	is_blocked = False	PASS
+TC11	L?y danh sách xe	Nhánh có d? li?u	-	Danh sách có ít nh?t 2 xe	PASS
+TC12	T?m xe theo ID	Nhánh ID t?n t?i	id = 1	Tr? v? Toyota Camry	PASS
+TC13	T?m xe theo ID	Nhánh ID không t?n t?i	id = 999	Tr? v? None	PASS
+TC14	Thêm xe	Nhánh thêm m?i	Xe Kia Seltos	Sinh ID t? ð?ng	PASS
+TC15	C?p nh?t xe	Nhánh ID t?n t?i	id = 1	C?p nh?t tên và giá thành công	PASS
+TC16	C?p nh?t xe	Nhánh ID không t?n t?i	id = 9999	Ném ngo?i l?	PASS
+TC17	Xóa xe	Nhánh xóa thành công	Xe t?m th?i	getById() tr? v? None	PASS
+TC18	T?m ki?m tên xe	Nhánh t?m ki?m không phân bi?t hoa thý?ng	"bmw"	Tr? v? BMW	PASS
+TC19	L?c theo h?ng	Nhánh có k?t qu?	"Toyota"	T?t c? xe thu?c Toyota	PASS
+TC20	L?c theo giá	Nhánh n?m trong kho?ng giá	1000 - 2000	T?t c? xe ðúng kho?ng giá	PASS
