@@ -150,7 +150,7 @@
       background: rgb(16, 137, 197);
       border-radius: 16px;
       padding: 20px;
-      width: 890px;
+      width: 830px;
       max-width: 90%;
       position: absolute;
       left: 50%;
@@ -159,27 +159,77 @@
       box-shadow: 0 10px 30px rgba(0,0,0,.15);
       z-index: 10;
     }
-    .search-row { display: flex; gap: 10px; margin-bottom: 14px; }
-    .search-input {
-      flex: 1; padding: 12px 18px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: 15px; outline: none; transition: border .2s;
-    }
+    .search-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:10px;
+    margin-bottom:14px;
+   }
+    .search-input{
+    grid-column: span 3;
+    width:100%;
+    padding:12px 18px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    font-size:15px;
+   }
     .search-input:focus { border-color: var(--text); }
-    .btn-search {
-      padding: 12px 28px; background: var(--red); color: white;
-      border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background .2s; white-space: nowrap;
-    }
+    .btn-search{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:var(--red);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+   }
     .btn-search:hover { background: #c8001f; }
 
-    .filter-row { display: flex; gap: 10px; }
-    .filter-select {
-      flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
-      border-radius: 8px; font-size: 14px; outline: none; cursor: pointer;
-      background: white; transition: border .2s;
-    }
+    .filter-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
     .filter-select:focus{
     border-color: rgb(16, 137, 197);
+}
+.filter-select{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    height:42px;
+    padding:0 15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:#fff;
+    font-size:15px;
+    cursor:pointer;
+}
+.filter-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f5f5f7;
+    padding:18px 24px;
+    border-radius:16px;
+    margin:20px 0 30px;
+}
+
+#resultCount{
+    color:#666;
+    font-size:14px;
+    font-weight:500;
+}
+#sortSelect{
+    width:170px !important;
+    min-width:170px !important;
+    max-width:170px !important;
+    height:42px;
+    padding:0 14px;
+    border-radius:12px;
 }
 
     /* ── STATS ── */
@@ -334,10 +384,12 @@
       <span class="logo-text">Car<span>Price</span>360</span>
     </a>
     <nav>
-      <a href="#" class="active">Trang chủ</a>
+      <a href="index.html" class="active">Trang chủ</a>
       <a href="javascript:void(0)" onclick="scrollToSection('brands')">Thương hiệu</a> 
       <a href="javascript:void(0)" onclick="scrollToSection('cars')">Danh sách xe</a>  
+      <a href="showroom.html">Showroom</a>
       <a href="compare.html">So sánh xe</a>
+      <a href="saved.html">Xe đã lưu</a>
     </nav>
     <div class="header-actions" id="headerActions">
       <a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
@@ -396,12 +448,25 @@
       <div class="loading">Đang tải thương hiệu...</div>
     </div>
   </div>
-
   <div class="section" id="cars">
-  <div class="section-header">
-    <h2 class="section-title"><span> Danh sách ô tô</span> </h2>
-    <span id="resultCount" style="color:var(--muted);font-size:14px"></span>
-  </div>
+<div class="section-header">
+    <h1 class="section-title">
+        <span>Danh sách ô tô</span>
+    </h1>
+</div>
+    <div class="filter-bar">
+    <div class="filter-left">
+        <label>Sắp xếp theo :</label>
+        <select id="sortSelect" class="filter-select" onchange="filterCars()">
+            <option value="brand" selected>Thương hiệu</option>
+            <option value="price-asc">Giá tăng dần</option>
+            <option value="price-desc">Giá giảm dần</option>
+        </select>
+    </div>
+    <span id="resultCount"></span>
+</div>
+    <br>
+
   <div class="car-grid" id="carGrid">
     <div class="loading"><div class="spinner"></div>Đang tải dữ liệu xe...</div>
   </div>
@@ -486,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-/* ─── Logo thương hiệu (thêm dòng mới khi có brand mới) ─── */
+// Logo thương hiệu
 const brandLogos = {
   'Audi':     'image/cars/audi/logo/logo-audi.png',
   'BMW':      'image/cars/bmw/logo/logo-bmw.png',
@@ -500,7 +565,7 @@ const brandLogos = {
   'VinFast':  'image/cars/vinFast/logo/logo-vinfast.png',
 };
 
-/* ─── Render danh sách thương hiệu động từ API ─── */
+//Render danh sách thương hiệu động từ API 
 function renderBrands(cars) {
   const brands = [...new Set(cars.map(c => c.thuongHieu))].sort();
   const grid = document.getElementById('brandsGrid');
@@ -513,7 +578,6 @@ function renderBrands(cars) {
       <span>${brand}</span>
     </div>
   `).join('');
-
   // Cập nhật stats động
   const fuels = [...new Set(cars.map(c => c.nhienLieu))];
   const types = [...new Set(cars.map(c => c.loaiXe))];
@@ -524,7 +588,6 @@ function renderBrands(cars) {
   if (elFuels)  elFuels.textContent  = fuels.length;
   if (elTypes)  elTypes.textContent  = types.length;
 }
-
 // Load cars từ API
 async function loadCars() {
   try {
@@ -538,12 +601,10 @@ async function loadCars() {
       '<div class="loading" style="color:#c00">⚠️ Không thể kết nối server. Hãy đảm bảo backend đang chạy.</div>';
   }
 }
-
 function formatPrice(gia) {
   if (gia >= 1000) return (gia / 1000).toFixed(gia % 1000 === 0 ? 0 : 1) + ' tỷ';
   return gia + ' triệu';
 }
-
 function renderCars(cars) {
   const grid = document.getElementById('carGrid');
   document.getElementById('resultCount').textContent = `${cars.length} xe được tìm thấy`;
@@ -569,13 +630,13 @@ function renderCars(cars) {
     </div>
   `).join('');
 }
-
 function filterCars() {
   const keyword = document.getElementById('searchInput').value.toLowerCase();
   const brand = document.getElementById('filterBrand').value;
   const type = document.getElementById('filterType').value;
   const fuel = document.getElementById('filterFuel').value;
   const price = document.getElementById('filterPrice').value;
+  const sortMode = document.getElementById("sortSelect").value;
 
   let filtered = allCars.filter(car => {
     const matchKey = !keyword || car.tenXe.toLowerCase().includes(keyword) || car.thuongHieu.toLowerCase().includes(keyword);
@@ -589,20 +650,37 @@ function filterCars() {
     }
     return matchKey && matchBrand && matchType && matchFuel && matchPrice;
   });
+  if (sortMode === "brand") {
+    filtered.sort((a, b) => {
+        const brand = a.thuongHieu.localeCompare(b.thuongHieu, "vi");
+        if (brand !== 0) return brand;
+
+        return a.tenXe.localeCompare(b.tenXe, "vi");
+    });
+}
+if (sortMode === "price-asc") {
+    filtered.sort((a, b) => a.gia - b.gia);
+}
+
+if (sortMode === "price-desc") {
+    filtered.sort((a, b) => b.gia - a.gia);
+}
+
+if (sortMode === "name") {
+    filtered.sort((a, b) => a.tenXe.localeCompare(b.tenXe, "vi"));
+}
   renderCars(filtered);
 }
 
 function filterByBrand(brand) {
   document.getElementById('filterBrand').value = brand;
   document.getElementById('cars').scrollIntoView({ behavior: 'smooth' });
-  
   // Tự động kích hoạt nút "Tìm xe" khi người dùng chọn thương hiệu nhanh
   const menuItems = document.querySelectorAll('nav a');
   if(menuItems.length > 1) {
     menuItems.forEach(nav => nav.classList.remove('active'));
     menuItems[1].classList.add('active');
   }
-  
   filterCars();
 }
 
@@ -619,8 +697,7 @@ function openModal(type) {
     if(type === 'register'){
         document.getElementById('regName').value = '';
         document.getElementById('regEmail').value = '';
-        document.getElementById('regPass').value = '';
-        
+        document.getElementById('regPass').value = '';    
 // Ẩn dòng thông báo màu xanh/đỏ cũ đi và xóa chữ bên trong
         const regMsg = document.getElementById('registerMsg');
         regMsg.className = 'msg'; 
@@ -636,7 +713,6 @@ async function doLogin() {
   const email = document.getElementById('loginEmail').value;
   const matKhau = document.getElementById('loginPass').value;
   const msg = document.getElementById('loginMsg');
-
   try {
     const res = await fetch(`${API}/auth/login`, {
       method: 'POST',
@@ -650,9 +726,8 @@ async function doLogin() {
     });
 
     const data = await res.json();
-
-    console.log(data); // Kiểm tra dữ liệu trả về
-
+    // Kiểm tra dữ liệu trả về
+    console.log(data); 
     if (data.success) {
       // Nếu là Admin thì chuyển sang trang admin
       if (data.vaiTro === "ADMIN") {
@@ -713,7 +788,7 @@ function logout() {
   function scrollToSection(id) {
       const el = document.getElementById(id);
       if (!el) return;
-      const yOffset = -80; // chỉnh theo chiều cao header
+      const yOffset = -80; 
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({
           top: y,
