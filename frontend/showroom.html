@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Showroom - CarPrice360</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #E8002D; --dark: #0F0F1A; --white: #FFFFFF;
+    --gray: #F5F5F7; --text: #1D1D1F; --muted: #6E6E73;
+    --border: #E0E0E5; --blue: rgb(16,137,197);
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--white); color: var(--text); }
+
+  /* ── HEADER ── */
+  header { background: rgb(16,137,197); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,.15); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 36px; height: 36px; background: var(--white); color: rgb(16,137,197); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; }
+  .logo-text { font-size: 20px; font-weight: 700; color: white; letter-spacing: -.5px; }
+  nav { display: flex; gap: 8px; }
+  nav a { background: #fff; border: 1.5px solid #E0E0E5; color: #0F0F1A; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-block; transition: all .25s; }
+  nav a:hover, nav a.active { background: #fff !important; border-color: #0F0F1A !important; color: #0F0F1A !important; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,.12) !important; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-login { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .25s; text-decoration: none; display: inline-block; }
+  .btn-outline { background: #fff; border: 1.5px solid #E0E0E5; color: #0F0F1A; }
+  .btn-outline:hover { background: #fff; border-color: #0F0F1A; color: #0F0F1A; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,.12); }
+  .btn-solid { background: var(--red); border: 1.5px solid var(--red); color: white; }
+  .btn-solid:hover { background: #c8001f; transform: translateY(-3px); box-shadow: 0 6px 12px rgba(232,0,45,.2); }
+
+  /* ── PAGE TITLE ── */
+  .page-title-bar {
+    background: var(--gray); border-bottom: 1px solid var(--border);
+    padding: 28px 40px; text-align: center;
+  }
+  .page-title-bar h1 { font-size: 26px; font-weight: 800; color: var(--red); }
+  .page-title-bar p { font-size: 18px; color: var(--dark); margin-top: 4px; }
+
+  /* ── SEARCH SECTION ── */
+  .search-section {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 40px;
+    position: relative; /* Tạo gốc tọa độ để đẩy ô chọn thành phố hoặc căn chỉnh */
+    display: flex;
+    justify-content: center; /* Luôn luôn căn giữa cụm tìm kiếm chính */
+    align-items: center;
+  }
+
+  /* Bọc toàn bộ ô input + icon + nút tìm kiếm thành 1 cụm cố định ở giữa */
+  .search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 520px; /* Độ dài thanh tìm kiếm sau khi thu ngắn (bạn tăng giảm tùy ý) */
+    position: relative;
+  }
+
+  /* Khung chứa riêng cho Icon và Input để icon không bị nhảy ra ngoài */
+  .search-field-container {
+    position: relative;
+    flex: 1;
+  }
+
+  .search-input-wrap input {
+    width: 100%; 
+    padding: 11px 16px 11px 40px; /* Chừa 40px bên trái cho icon kính lúp */
+    border: 1.5px solid var(--border); 
+    border-radius: 10px;
+    font-size: 14px; 
+    outline: none; 
+    transition: border .2s; 
+    background: white;
+  }
+  .search-input-wrap input:focus { border-color: var(--red); }
+
+  /* Định vị icon kính lúp chuẩn chỉnh bên trong ô input */
+  .search-input-wrap .ico {
+    position: absolute; 
+    left: 14px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    font-size: 15px; 
+    pointer-events: none; 
+    z-index: 2;
+  }
+
+  /* Nút tìm kiếm màu đỏ */
+  .btn-search-submit {
+    background: var(--red); 
+    color: white; 
+    border: none; 
+    padding: 11px 22px;
+    border-radius: 10px; 
+    font-size: 14px; 
+    font-weight: 600; 
+    cursor: pointer;
+    transition: all 0.2s; 
+    white-space: nowrap;
+    height: 100%;
+  }
+  .btn-search-submit:hover { background: #c8001f; }
+  /* ── BRANDS ROW (ĐÃ XÓA BỎ KHUNG XÁM CHỨA) ── */
+ .brands-section {
+    padding: 0 40px; 
+    margin: 40px auto; 
+    max-width: 1200px;
+  }
+  .brands-grid { 
+    display: grid; grid-template-columns: repeat(10, 1fr); gap: 12px; max-width: 100%; margin: 0 auto; 
+  }
+  .brand-card { 
+    background: white; border: 1.5px solid var(--border); border-radius: 12px; 
+    padding: 12px 6px; text-align: center; cursor: pointer; transition: all .2s; 
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-card:hover { border-color: var(--red); box-shadow: 0 4px 12px rgba(232,0,45,.1); transform: translateY(-2px); }
+  .brand-card.active { border-color: var(--red); background: #fff5f7; box-shadow: 0 4px 12px rgba(232,0,45,.15); }
+  .brand-card img { width: 100%; height: 44px; object-fit: contain; }
+
+  /* ── MAIN CONTENT ── */
+  .main-content { max-width: 1200px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* ── TOOLBAR TRÊN ĐẦU SHOWROOM CHỨA THÀNH PHỐ VÀ SỐ LƯỢNG KẾT QUẢ ── */
+  .result-bar { 
+    display: flex; align-items: center; justify-content: space-between; 
+    margin: 16px 0 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+.city-select {
+    justify-self: end;
+    padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+    font-size: 14px; font-weight: 600; background: white; cursor: pointer;
+    outline: none; transition: border .2s; min-width: 150px;
+  }
+  .city-select:focus { border-color: var(--red); }
+  .result-info { font-size: 14px; color: var(--muted); }
+  .result-info span { color: var(--red); font-weight: 700; }
+
+  /* ── SHOWROOM GRID ── */
+  .showroom-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;
+  }
+  .showroom-card {
+    background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all .25s;
+  }
+  .showroom-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.13); border-color: var(--red); }
+  .showroom-img-wrap { position: relative; width: 100%; height: 190px; overflow: hidden; background: #eee; }
+  .showroom-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s; }
+  .showroom-card:hover .showroom-img-wrap img { transform: scale(1.05); }
+  .showroom-img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg,#e8e8ee,#d5d5de); }
+  
+  .badge-brand {
+    position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
+    border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 800; color: var(--red); text-transform: uppercase; letter-spacing: .5px;
+  }
+  .badge-city {
+    position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,.48); backdrop-filter: blur(6px);
+    border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: white;
+  }
+  .showroom-body { padding: 14px 16px; }
+  .showroom-name { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+
+  .empty-state { grid-column: 1/-1; text-align: center; padding: 70px 20px; color: var(--muted); }
+  .empty-state .empty-icon { font-size: 60px; margin-bottom: 16px; opacity: .5; }
+  .empty-state p { font-size: 16px; }
+
+  .loading-state { text-align: center; padding: 60px; color: var(--muted); }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── MODAL ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 16px; padding: 36px; width: 420px; max-width: 90vw; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+  .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+  .modal-input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; margin-bottom: 12px; outline: none; transition: border .2s; }
+  .modal-input:focus { border-color: var(--red); }
+  .modal-btn { width: 100%; padding: 13px; background: var(--red); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; margin-top: 4px; }
+  .modal-btn:hover { background: #c8001f; }
+  .modal-close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; margin-top: -8px; }
+  .modal-switch { text-align: center; margin-top: 16px; font-size: 14px; color: var(--muted); }
+  .modal-switch a { color: var(--red); cursor: pointer; font-weight: 600; }
+  .msg { font-size: 13px; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; display: none; }
+  .msg.error { background: #fff0f0; color: #c00; border: 1px solid #fcc; display: block; }
+  .msg.success { background: #f0fff4; color: #1a7a3a; border: 1px solid #b2dfca; display: block; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); color: rgba(255,255,255,.5); text-align: center; padding: 24px; font-size: 13px; }
+  footer span { color: var(--red); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .header-top { padding: 0 16px; }
+    nav { display: none; }
+    .main-content { padding: 0 16px 60px; }
+    .brands-section { padding: 0 16px; margin: 20px auto; }
+    .brands-grid { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .showroom-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .result-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+  @media (max-width: 480px) {
+    .brands-grid { grid-template-columns: repeat(3, 1fr); }
+    .showroom-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">C</div>
+      <span class="logo-text">CarPrice360</span>
+    </a>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="index.html#brands">Thương hiệu</a>
+      <a href="index.html#cars">Danh sách xe</a>
+      <a href="compare.html">So sánh xe</a>
+      <a href="showroom.html" class="active">Showroom</a>
+      <a href="saved.html">Xe đã lưu</a>
+    </nav>
+    <div class="header-actions" id="headerActions">
+      <a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
+      <a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-title-bar">
+  <h1>Hệ thống Showroom</h1>
+  <p>Tìm showroom chính hãng gần bạn tại Hà Nội & TP.HCM</p>
+</div>
+
+<div class="search-section">
+  <div class="search-input-wrap">
+    <span class="ico">🔍</span>
+    <input type="text" id="searchInput" placeholder="Tìm tên showroom..." oninput="renderShowrooms()">
+    <button class="btn-search-submit" onclick="handleSearchSubmit()">Tìm kiếm</button>
+  </div>
+</div>
+
+<div class="brands-section">
+  <div class="brands-grid" id="brandsGrid"></div>
+</div>
+
+<div class="main-content">
+  <div class="result-bar">
+    <select class="city-select" id="citySelect" onchange="renderShowrooms()">
+      <option value="">Tất cả thành phố</option>
+      <option value="Hà Nội"> Hà Nội</option>
+      <option value="TP.HCM">TP.HCM</option>
+    </select>
+    
+    <div class="result-info" id="resultInfo"></div>
+  </div>
+
+  <div class="showroom-grid" id="showroomGrid">
+    <div class="loading-state"><div class="spinner"></div>Đang tải showroom...</div>
+  </div>
+</div>
+
+<footer>© 2026 <span>CarPrice360</span> — Nền tảng tìm kiếm & so sánh ô tô Việt Nam</footer>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('login')">×</span>
+    <h2>Đăng nhập</h2>
+    <div class="msg" id="loginMsg"></div>
+    <input class="modal-input" id="loginEmail" type="email" placeholder="Email" autocomplete="off">
+    <input class="modal-input" id="loginPass" type="password" placeholder="Mật khẩu" autocomplete="off">
+    <button class="modal-btn" onclick="doLogin()">Đăng nhập</button>
+    <div class="modal-switch">Chưa có tài khoản? <a onclick="switchModal('login','register')">Đăng ký ngay</a></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('register')">×</span>
+    <h2>Đăng ký tài khoản</h2>
+    <div class="msg" id="registerMsg"></div>
+    <input class="modal-input" id="regName" type="text" placeholder="Họ và tên">
+    <input class="modal-input" id="regEmail" type="email" placeholder="Email">
+    <input class="modal-input" id="regPass" type="password" placeholder="Mật khẩu">
+    <button class="modal-btn" onclick="doRegister()">Đăng ký</button>
+    <div class="modal-switch">Đã có tài khoản? <a onclick="switchModal('register','login')">Đăng nhập</a></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api';
+let currentUser = null;
+let activeBrand = '';
+let activeCity = '';
+
+const showrooms = [
+  { brand:"Audi", name:"Audi Hà Nội", city:"Hà Nội", image:"image/showroom/audi/hanoi/audihanoi.png" },
+  { brand:"Audi", name:"Audi Hồ Chí Minh", city:"TP.HCM", image:"image/showroom/audi/tphcm/audihochiminh.png" },
+  { brand:"Audi", name:"Audi Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/audi/tphcm/audiphumyhung.png" },
+  { brand:"Audi", name:"Audi Tân Bình", city:"TP.HCM", image:"image/showroom/audi/tphcm/auditanbinh.png" },
+  { brand:"BMW", name:"BMW Lê Duẩn", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwleduan.png" },
+  { brand:"BMW", name:"BMW Lê Văn Lương", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwlevanluong.png" },
+  { brand:"BMW", name:"BMW Long Biên", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwlongbien.png" },
+  { brand:"BMW", name:"BMW Phạm Văn Đồng", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwphamvandong.png" },
+  { brand:"BMW", name:"BMW Bình Dương", city:"TP.HCM", image:"image/showroom/bmw/hcm/bmwbinhduong.png" },
+  { brand:"BMW", name:"BMW Hồ Chí Minh", city:"TP.HCM", image:"image/showroom/bmw/hcm/bmwhochiminh.png" },
+  { brand:"BMW", name:"BMW MINI Sala Quận 2", city:"TP.HCM", image:"image/showroom/bmw/hcm/bmwminisalaquan2.png" },
+  { brand:"BMW", name:"BMW Nguyễn Văn Trỗi", city:"TP.HCM", image:"image/showroom/bmw/hcm/bmwnguyenvantroi.png" },
+  { brand:"BMW", name:"BMW Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/bmw/hcm/bmwphumyhung.png" },
+  { brand:"Ford", name:"An Đô Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/andoford.png" },
+  { brand:"Ford", name:"Capital Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/capitalford.png" },
+  { brand:"Ford", name:"Hà Nội Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/hanoiford.png" },
+  { brand:"Ford", name:"Hà Thành Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/hathanhford.png" },
+  { brand:"Ford", name:"Long Biên Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/longbienford.png" },
+  { brand:"Ford", name:"Mỹ Đình Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/mydinhford.png" },
+  { brand:"Ford", name:"Tây Mỗ Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/taymoford.png" },
+  { brand:"Ford", name:"Thăng Long Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/thanglongford.png" },
+  { brand:"Ford", name:"Thanh Xuân Ford", city:"Hà Nội", image:"image/showroom/ford/hanoi/thanhxuanford.png" },
+  { brand:"Ford", name:"Bà Rịa Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/bariaford.png" },
+  { brand:"Ford", name:"Bến Thành Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/benthanhford.png" },
+  { brand:"Ford", name:"Bình Dương Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/binhduongford.png" },
+  { brand:"Ford", name:"City Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/cityford.png" },
+  { brand:"Ford", name:"Dĩ An Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/dianford.png" },
+  { brand:"Ford", name:"Gia Định Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/giadinhford.png" },
+  { brand:"Ford", name:"Nam Sài Gòn Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/namsaigonford.png" },
+  { brand:"Ford", name:"Phổ Quang Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/phoquangford.png" },
+  { brand:"Ford", name:"Phú Mỹ Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/phumyford.png" },
+  { brand:"Ford", name:"Sài Gòn Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/saigonford.png" },
+  { brand:"Ford", name:"Suối Tiên Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/suoitienford.png" },
+  { brand:"Ford", name:"Tân Thuận Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/tanthuanford.png" },
+  { brand:"Ford", name:"Vũng Tàu Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/vungtauford.png" },
+  { brand:"Ford", name:"Western Ford", city:"TP.HCM", image:"image/showroom/ford/hcm/westernford.png" },
+  { brand:"Hyundai", name:"Hyundai Phạm Hùng", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/huyndaiphamhung.png" },
+  { brand:"Hyundai", name:"Hyundai An Khánh", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaiankhanh.png" },
+  { brand:"Hyundai", name:"Hyundai Cầu Diễn", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaicaudien.png" },
+  { brand:"Hyundai", name:"Hyundai Đông Anh", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaidonganh.png" },
+  { brand:"Hyundai", name:"Hyundai Đông Đô", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaidongdo.png" },
+  { brand:"Hyundai", name:"Hyundai Giải Phóng", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaigiaiphong.png" },
+  { brand:"Hyundai", name:"Hyundai Gia Lâm", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaigialam.png" },
+  { brand:"Hyundai", name:"Hyundai Hà Đông", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaihadong.png" },
+  { brand:"Hyundai", name:"Hyundai Lê Văn Lương", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundailevanluong.png" },
+  { brand:"Hyundai", name:"Hyundai Long Biên", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundailongbien.png" },
+  { brand:"Hyundai", name:"Hyundai Phạm Văn Đồng", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaiphamvandong.png" },
+  { brand:"Hyundai", name:"Hyundai Sơn Tây", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaisontay.png" },
+  { brand:"Hyundai", name:"Hyundai Vũ Phạm Hàm", city:"Hà Nội", image:"image/showroom/hyundai/hanoi/hyundaivuphamham.png" },
+  { brand:"Hyundai", name:"Hyundai An Phú", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaianphu.png" },
+  { brand:"Hyundai", name:"Hyundai Bà Rịa Vũng Tàu", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaibariavungtau.png" },
+  { brand:"Hyundai", name:"Hyundai Bình Dương", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaibinhduong.png" },
+  { brand:"Hyundai", name:"Hyundai Đông Sài Gòn", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaidongsaigon.png" },
+  { brand:"Hyundai", name:"Hyundai Gia Định", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaigiadinh.png" },
+  { brand:"Hyundai", name:"Hyundai Kinh Dương Vương", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaikinhduongvuong.png" },
+  { brand:"Hyundai", name:"Hyundai Miền Nam", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaimiennam.png" },
+  { brand:"Hyundai", name:"Hyundai Ngọc An", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaingocan.png" },
+  { brand:"Hyundai", name:"Hyundai Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaiphumyhung.png" },
+  { brand:"Hyundai", name:"Hyundai Trường Chinh", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaitruongchinh.png" },
+  { brand:"Hyundai", name:"Hyundai Việt Hàn", city:"TP.HCM", image:"image/showroom/hyundai/hcm/hyundaiviethan.png" },
+  { brand:"Kia", name:"Kia Bạch Đằng", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiabachdang.png" },
+  { brand:"Kia", name:"Kia Cầu Diễn", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiacaudien.png" },
+  { brand:"Kia", name:"Kia Đống Đa", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiadongda.png" },
+  { brand:"Kia", name:"Kia Giải Phóng", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiagiaiphong.png" },
+  { brand:"Kia", name:"Kia Long Biên", city:"Hà Nội", image:"image/showroom/kia/hanoi/kialongbien.png" },
+  { brand:"Kia", name:"Kia Phạm Văn Đồng", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiaphamvandong.png" },
+  { brand:"Kia", name:"Kia Sơn Tây", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiasontay.png" },
+  { brand:"Kia", name:"Kia Thanh Xuân", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiathanhxuan.png" },
+  { brand:"Kia", name:"Kia Yên Nghĩa", city:"Hà Nội", image:"image/showroom/kia/hanoi/kiayennghia.png" },
+  { brand:"Kia", name:"Kia Bà Rịa", city:"TP.HCM", image:"image/showroom/kia/hcm/kiabaria.png" },
+  { brand:"Kia", name:"Kia Bình Dương", city:"TP.HCM", image:"image/showroom/kia/hcm/kiabinhduong.png" },
+  { brand:"Kia", name:"Kia Bình Tân", city:"TP.HCM", image:"image/showroom/kia/hcm/kiabinhtan.png" },
+  { brand:"Kia", name:"Kia Bình Triệu", city:"TP.HCM", image:"image/showroom/kia/hcm/kiabinhtrieu.png" },
+  { brand:"Kia", name:"Kia Gò Vấp", city:"TP.HCM", image:"image/showroom/kia/hcm/kiagovap.png" },
+  { brand:"Kia", name:"Kia Hồ Chí Minh", city:"TP.HCM", image:"image/showroom/kia/hcm/kiahochiminh.png" },
+  { brand:"Kia", name:"Kia Hùng Vương", city:"TP.HCM", image:"image/showroom/kia/hcm/kiahungvuong.png" },
+  { brand:"Kia", name:"Kia Kinh Dương Vương", city:"TP.HCM", image:"image/showroom/kia/hcm/kiakinhduongvuong.png" },
+  { brand:"Kia", name:"Kia Nguyễn Văn Trỗi", city:"TP.HCM", image:"image/showroom/kia/hcm/kianguyenvantroi.png" },
+  { brand:"Kia", name:"Kia Phan Huy Ích", city:"TP.HCM", image:"image/showroom/kia/hcm/kiaphanhuyich.png" },
+  { brand:"Kia", name:"Kia Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/kia/hcm/kiaphumyhung.png" },
+  { brand:"Kia", name:"Kia Tân Sơn Nhất", city:"TP.HCM", image:"image/showroom/kia/hcm/kiatansonnhat.png" },
+  { brand:"Kia", name:"Kia Tân Uyên", city:"TP.HCM", image:"image/showroom/kia/hcm/kiatanuyen.png" },
+  { brand:"Kia", name:"Kia Thảo Điền", city:"TP.HCM", image:"image/showroom/kia/hcm/kiathaodien.png" },
+  { brand:"Kia", name:"Kia Thiso Sala", city:"TP.HCM", image:"image/showroom/kia/hcm/kiathisosala.png" },
+  { brand:"Kia", name:"Kia Thủ Dầu Một", city:"TP.HCM", image:"image/showroom/kia/hcm/kiathudaumot.png" },
+  { brand:"Kia", name:"Kia Trường Chinh", city:"TP.HCM", image:"image/showroom/kia/hcm/kiatruongchinh.png" },
+  { brand:"Kia", name:"Kia Vũng Tàu", city:"TP.HCM", image:"image/showroom/kia/hcm/kiavungtau.png" },
+  { brand:"Lexus", name:"Lexus Thăng Long", city:"Hà Nội", image:"image/showroom/lexus/hanoi/lexusthanglong.png" },
+  { brand:"Lexus", name:"Lexus Trung Tâm Sài Gòn", city:"TP.HCM", image:"image/showroom/lexus/hcm/lexustrungtamsaigon.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz An Du Phạm Hùng", city:"Hà Nội", image:"image/showroom/mercedes-benz/hanoi/mercedes-benzanduphamhung.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Haxaco Kim Giang", city:"Hà Nội", image:"image/showroom/mercedes-benz/hanoi/mercedes-benzhaxacokimgiang.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Haxaco Láng Hạ", city:"Hà Nội", image:"image/showroom/mercedes-benz/hanoi/mercedes-benzhaxacolangha.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Đại Từ", city:"Hà Nội", image:"image/showroom/mercedes-benz/hanoi/mercedes-benzvietnamstardaitu.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Hoàn Kiếm", city:"Hà Nội", image:"image/showroom/mercedes-benz/hanoi/mercedes-benzvietnamstarhoankiem.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Haxaco Điện Biên Phủ", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzhaxacodienbienphu.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Haxaco Võ Văn Kiệt", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzhaxacovovankiet.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Bình Dương", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzvietnamstarbinhduong.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Chế Lan Viên", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzvietnamstarchelanvien.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzvietnamstarphumyhung.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vietnam Star Trường Chinh", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzvietnamstartruongchinh.png" },
+  { brand:"Mercedes-Benz", name:"Mercedes-Benz Vũng Tàu", city:"TP.HCM", image:"image/showroom/mercedes-benz/hcm/mercedes-benzvungtau.png" },
+  { brand:"Porsche", name:"Porsche Hà Nội", city:"Hà Nội", image:"image/showroom/porsche/hanoi/porschehanoi.png" },
+  { brand:"Porsche", name:"Porsche Sài Gòn", city:"TP.HCM", image:"image/showroom/porsche/hcm/porschesaigon.png" },
+  { brand:"Toyota", name:"Toyota Giải Phóng", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotagiaiphong.png" },
+  { brand:"Toyota", name:"Toyota Hà Đông", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotahadong.png" },
+  { brand:"Toyota", name:"Toyota Hoàn Kiếm", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotahoankiem.png" },
+  { brand:"Toyota", name:"Toyota IDC Hoài Đức", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotaidmchoaiduc.png" },
+  { brand:"Toyota", name:"Toyota Long Biên", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotalongbien.png" },
+  { brand:"Toyota", name:"Toyota Mỹ Đình", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotamydinh.png" },
+  { brand:"Toyota", name:"Toyota Pháp Vân", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotaphapvan.png" },
+  { brand:"Toyota", name:"Toyota Thái Hòa Từ Liêm", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathaihoatuliem.png" },
+  { brand:"Toyota", name:"Toyota Thăng Long", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathanglong.png" },
+  { brand:"Toyota", name:"Toyota Thanh Xuân", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathanhxuan.png" },
+  { brand:"Toyota", name:"Toyota An Sương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaansuong.png" },
+  { brand:"Toyota", name:"Toyota Bến Thành", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotabenthanh.png" },
+  { brand:"Toyota", name:"Toyota Bình Dương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotabinhduong.png" },
+  { brand:"Toyota", name:"Toyota Đông Sài Gòn", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotadongsaigon.png" },
+  { brand:"Toyota", name:"Toyota Lý Thường Kiệt", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotalythuongkiet.png" },
+  { brand:"Toyota", name:"Toyota Vũng Tàu", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotavungtau.png" },
+  { brand:"Toyota", name:"Toyota Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaphumyhung.png" },
+  { brand:"Toyota", name:"Toyota An Thành", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaanthanh.png" },
+  { brand:"Toyota", name:"Toyota Nguyễn Văn Lương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotanguyenvanluong.png" },
+  { brand:"Toyota", name:"Toyota Hùng Vương ", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotahungvuong.png" },
+  { brand:"VinFast", name:"VinFast Tây Hồ", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfasttayho.png" },
+  { brand:"VinFast", name:"VinFast Thăng Long", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastthanglong.png" },
+  { brand:"VinFast", name:"VinFast Mỹ Đình", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastmydinh.png" },
+  { brand:"VinFast", name:"VinFast Ocean Park", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastoceanpark.png" },
+  { brand:"VinFast", name:"VinFast Phạm Văn Đồng", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastphamvandong.png" },
+  { brand:"VinFast", name:"VinFast Trần Duy Hưng", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfasttranduyhung.png" },
+  { brand:"VinFast", name:"VinFast Trường Chinh", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfasttruongchinh.png" },
+  { brand:"VinFast", name:"VinFast VMM Times City", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastvmmtimescity.png" },
+  { brand:"VinFast", name:"VinFast Nam Từ Liêm", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastvnamtulien.png" },
+  { brand:"VinFast", name:"VinFast VMM Royal City", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastvmmroyalcity.png" },
+  { brand:"VinFast", name:"VinFast An Thái", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastanthai.png" },
+  { brand:"VinFast", name:"VinFast Cộng Hòa ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastconghoa.png" },
+  { brand:"VinFast", name:"VinFast Đông Sài Gòn ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastdongsaigon.png" },
+  { brand:"VinFast", name:"VinFast Gò Vấp ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastgovap.png" },
+  { brand:"VinFast", name:"VinFast Nam Thái  ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastnamthai.png" },
+  { brand:"VinFast", name:"VinFast Nhà Bè ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastnhabe.png" },
+  { brand:"VinFast", name:"VinFast Phú Mỹ Hưng ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastphumyhung.png" },
+  { brand:"VinFast", name:"VinFast Quang Trung", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastquangtrung.png" },
+  { brand:"VinFast", name:"VinFast Sài Gòn ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastsaigon.png" },
+  { brand:"VinFast", name:"VinFast Vũng Tàu ", city:"TP.HCM", image:"image/showroom/vinfast/hcm/vinfastvungtau.png" },
+];
+
+const brandLogos = {
+  'Audi':         'image/cars/audi/logo/logo-audi.png',
+  'BMW':          'image/cars/bmw/logo/logo-bmw.png',
+  'Ford':         'image/cars/ford/logo/logo-ford.png',
+  'Hyundai':      'image/cars/hyundai/logo/logo-hyundai.png',
+  'Kia':          'image/cars/kia/logo/logo-kia.png',
+  'Lexus':        'image/cars/lexus/logo/logo-lexus.png',
+  'Mercedes-Benz':'image/cars/mercedes-benz/logo/logo-mercedes-benz.png',
+  'Porsche':      'image/cars/porsche/logo/logo-porsche.png',
+  'Toyota':       'image/cars/toyota/logo/logo-toyota.png',
+  'VinFast':      'image/cars/vinFast/logo/logo-vinfast.png',
+};
+
+/* ── RENDER BRANDS GRID (ĐÃ ẨN CHỮ SPAN) ── */
+function renderBrands() {
+  const brands = [...new Set(showrooms.map(s => s.brand))].sort();
+  const grid = document.getElementById('brandsGrid');
+  grid.innerHTML = brands.map(brand => `
+    <div class="brand-card" id="bc-${brand.replace(/[^a-zA-Z]/g,'')}" onclick="setBrand('${brand}')">
+      ${brandLogos[brand]
+        ? `<img src="${brandLogos[brand]}" alt="${brand}" onerror="this.style.display='none'">`
+        : `<div style="font-size:28px;">🚗</div>`}
+    </div>
+  `).join('');
+}
+
+/* ── FILTER BRAND (LỌC XONG NHẢ LUÔN) ── */
+function setBrand(brand) {
+  activeBrand = brand; 
+  renderShowrooms();
+  document.querySelectorAll('.brand-card').forEach(el => el.classList.remove('active'));
+  activeBrand = ''; 
+  document.getElementById('showroomGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── NAVIGATE TO DETAIL ── */
+function goToDetail(s) {
+  const params = new URLSearchParams({
+    name: s.name,
+    brand: s.brand,
+    city: s.city,
+    image: s.image
+  });
+  window.location.href = 'showroomdetail.html?' + params.toString();
+}
+
+/* ── RENDER SHOWROOM GRID ── */
+function renderShowrooms() {
+  const grid = document.getElementById('showroomGrid');
+  const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  activeCity = document.getElementById('citySelect')?.value || '';
+  let list = showrooms;
+  if (activeBrand) list = list.filter(s => s.brand === activeBrand);
+  if (activeCity)  list = list.filter(s => s.city === activeCity);
+  if (keyword)     list = list.filter(s => s.name.toLowerCase().includes(keyword) || s.brand.toLowerCase().includes(keyword));
+
+  document.getElementById('resultInfo').innerHTML =
+    `Tìm thấy <span>${list.length}</span> showroom${activeBrand ? ' · ' + activeBrand : ''}${activeCity ? ' · ' + activeCity : ''}`;
+
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🏪</div>
+        <p>Không tìm thấy showroom phù hợp</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(s => `
+    <div class="showroom-card" onclick='goToDetail(${JSON.stringify(s)})'>
+      <div class="showroom-img-wrap">
+        <img src="${s.image}" alt="${s.name}"
+          onerror="this.parentElement.innerHTML='<div class=\\'showroom-img-placeholder\\'></div>'">
+        <div class="badge-brand">${s.brand}</div>
+        <div class="badge-city">${s.city}</div>
+      </div>
+      <div class="showroom-body">
+        <div class="showroom-name">${s.name}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── LOGIC NÚT TÌM KIẾM HOẠT ĐỘNG NHƯ PHÍM ENTER VÀ CHẶN Ô TRỐNG ── */
+function handleSearchSubmit() {
+  const searchInput = document.getElementById('searchInput');
+  const keyword = searchInput ? searchInput.value.trim() : '';
+
+  // Nếu ô tìm kiếm trống: Khóa không cho cuộn và focus lại vào ô nhập
+  if (keyword === '') {
+    searchInput.focus();
+    return;
+  }
+
+  // Cập nhật lại danh sách dữ liệu lọc
+  renderShowrooms(); 
+  
+  // CUỘN ĐẾN ĐẦU Ô "TẤT CẢ THÀNH PHỐ" (.result-bar) VỚI ĐỘ LỆCH (OFFSET) ĐỂ KHÔNG BỊ KHUẤT DƯỚI HEADER
+  const resultBar = document.querySelector('.result-bar');
+  if (resultBar) {
+    const yOffset = -74; 
+    const y = resultBar.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// Sửa lại đoạn này để nhận diện chính xác ô input khi gõ phím Enter
+document.addEventListener('DOMContentLoaded', function() {
+  const inputEl = document.getElementById('searchInput');
+  if (inputEl) {
+    inputEl.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        handleSearchSubmit();
+      }
+    });
+  }
+});
+
+/* ── AUTH ── */
+function openModal(type) {
+  if (type === 'login') {
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPass').value = '';
+    const m = document.getElementById('loginMsg'); m.className = 'msg'; m.textContent = '';
+  }
+  if (type === 'register') {
+    document.getElementById('regName').value = '';
+    document.getElementById('regEmail').value = '';
+    document.getElementById('regPass').value = '';
+    const m = document.getElementById('registerMsg'); m.className = 'msg'; m.textContent = '';
+  }
+  document.getElementById(type + 'Modal').classList.add('open');
+}
+function closeModal(type) { document.getElementById(type + 'Modal').classList.remove('open'); }
+function switchModal(from, to) { closeModal(from); openModal(to); }
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const matKhau = document.getElementById('loginPass').value;
+  const msg = document.getElementById('loginMsg');
+  try {
+    const res = await fetch(`${API}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, matKhau }) });
+    const data = await res.json();
+    if (data.success) {
+      if (data.vaiTro === 'ADMIN') { window.location.href = 'admin.html'; return; }
+      currentUser = data;
+      localStorage.setItem('loggedInUser', JSON.stringify(data));
+      closeModal('login');
+      document.getElementById('headerActions').innerHTML =
+        `<span style="color:white;padding:8px 14px;font-size:14px">👋 ${data.hoTen}</span>
+         <a class="btn-login btn-outline" onclick="logout()">Đăng xuất</a>`;
+    } else { msg.className = 'msg error'; msg.textContent = data.message; }
+  } catch { msg.className = 'msg error'; msg.textContent = 'Lỗi kết nối server!'; }
+}
+
+async function doRegister() {
+  const hoTen = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const matKhau = document.getElementById('regPass').value;
+  const msg = document.getElementById('registerMsg');
+  try {
+    const res = await fetch(`${API}/auth/register`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ hoTen, email, matKhau }) });
+    const data = await res.json();
+    if (data.success) { msg.className = 'msg success'; msg.textContent = 'Đăng ký thành công! Đang chuyển...'; setTimeout(() => switchModal('register','login'), 1500); }
+    else { msg.className = 'msg error'; msg.textContent = data.message; }
+  } catch { msg.className = 'msg error'; msg.textContent = 'Lỗi kết nối server!'; }
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('loggedInUser');
+  document.getElementById('headerActions').innerHTML =
+    `<a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
+     <a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>`;
+}
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+function restoreSession() {
+  const saved = localStorage.getItem('loggedInUser');
+  if (!saved) return;
+  currentUser = JSON.parse(saved);
+  document.getElementById('headerActions').innerHTML =
+    `<span style="color:white;padding:8px 14px;font-size:14px">👋 ${currentUser.hoTen}</span>
+     <a class="btn-login btn-outline" onclick="logout()">Đăng xuất</a>`;
+}
+
+/* ── INIT ── */
+restoreSession();
+renderBrands();
+renderShowrooms();
+</script>
+</body>
+</html>
