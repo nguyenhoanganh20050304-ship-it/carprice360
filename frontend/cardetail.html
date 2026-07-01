@@ -377,7 +377,9 @@
       <a href="index.html">Trang chủ</a>
       <a href="index.html#brands">Thương hiệu</a>
       <a href="index.html#cars">Danh sách xe</a>
+      <a href="showroom.html">Showroom</a>
       <a href="compare.html">So sánh xe</a>
+      <a href="saved.html">Xe đã lưu</a>
     </nav>
     <div class="header-actions" id="headerActions">
   <a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
@@ -414,6 +416,10 @@
       <button class="sticky-tab" onclick="goCompare()" id="stab-compare">
         <span class="st-icon">⚖️</span>
         <span>So sánh xe này</span>
+      </button>
+      <button class="sticky-tab" onclick="goShowroom()" id="stab-showroom">
+        <span class="st-icon">🏪</span>
+        <span>Tìm showroom</span>
       </button>
     </div>
     <div class="sticky-actions">
@@ -685,6 +691,10 @@ function renderCarDetail(car) {
   currentTabKey = 'ngoai-that';
   currentImgIndex = 0;
   renderDots();
+  // Kiểm tra xe này đã được lưu chưa (nếu đã đăng nhập)
+  if (currentUser) {
+    updateSaveButton(checkIfSaved(car.id));
+  }
 }
 /* ── SIMILAR CARS ── */
 async function loadSimilarCars(car) {
@@ -780,39 +790,64 @@ function scrollToTab(section) {
 }
   function goCompare() {
     if (!currentCar) return;
-    // Lưu xe đang xem làm xe 1
     localStorage.setItem("compareCar1", JSON.stringify(currentCar));
-    // chuyển sang trang so sánh
     window.location.href = "compare.html";
   }
-/* ── SAVE FAVORITE ── */
-async function toggleSave() {
+
+/* ── FIND SHOWROOM: chuyển sang showroom.html và lọc sẵn theo hãng ── */
+function goShowroom() {
+  if (!currentCar) return;
+  // Map brand từ car API → brand trong showroom (Mercedes đặc biệt)
+  const brandMap = { 'Mercedes': 'Mercedes-Benz' };
+  const brand = brandMap[currentCar.thuongHieu] || currentCar.thuongHieu;
+  window.location.href = 'showroom.html?brand=' + encodeURIComponent(brand);
+}
+/* ── SAVE FAVORITE (lưu vào localStorage) ── */
+const LS_KEY = 'savedCars';
+
+function getSavedList() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch { return []; }
+}
+
+function checkIfSaved(carId) {
+  return getSavedList().some(c => c.id === carId);
+}
+
+function updateSaveButton(saved) {
+  isSaved = saved;
+  const btn = document.getElementById('btnSave');
+  const icon = document.getElementById('saveIcon');
+  const text = document.getElementById('saveText');
+  if (!btn) return;
+  if (saved) {
+    btn.classList.add('saved');
+    icon.textContent = '❤️';
+    text.textContent = 'Đã lưu';
+  } else {
+    btn.classList.remove('saved');
+    icon.textContent = '🔖';
+    text.textContent = 'Lưu xe';
+  }
+}
+
+function toggleSave() {
   if (!currentUser) {
     openModal('login');
     return;
   }
-  try {
-    if (!isSaved) {
-      await fetch(`${API}/favorites`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: currentUser.userId, carId: currentCar.id })
-      });
-      isSaved = true;
-      document.getElementById('btnSave').classList.add('saved');
-      document.getElementById('saveIcon').textContent = '❤️';
-      document.getElementById('saveText').textContent = 'Đã lưu';
-      showToast('❤️ Đã lưu vào danh sách yêu thích!');
-    } else {
-      await fetch(`${API}/favorites?userId=${currentUser.userId}&carId=${currentCar.id}`, { method: 'DELETE' });
-      isSaved = false;
-      document.getElementById('btnSave').classList.remove('saved');
-      document.getElementById('saveIcon').textContent = '🔖';
-      document.getElementById('saveText').textContent = 'Lưu xe';
-      showToast('🔖 Đã bỏ lưu xe');
-    }
-  } catch (e) {
-    showToast('⚠️ Không thể lưu. Kiểm tra server!');
+  const list = getSavedList();
+  if (!isSaved) {
+    // Lưu object xe kèm userId để phân biệt theo tài khoản
+    const carToSave = { ...currentCar, _userId: currentUser.userId };
+    list.push(carToSave);
+    localStorage.setItem(LS_KEY, JSON.stringify(list));
+    updateSaveButton(true);
+    showToast('❤️ Đã lưu vào danh sách yêu thích!');
+  } else {
+    const filtered = list.filter(c => !(c.id === currentCar.id && c._userId === currentUser.userId));
+    localStorage.setItem(LS_KEY, JSON.stringify(filtered));
+    updateSaveButton(false);
+    showToast('🔖 Đã bỏ lưu xe');
   }
 }
 /* ── TOAST ── */
