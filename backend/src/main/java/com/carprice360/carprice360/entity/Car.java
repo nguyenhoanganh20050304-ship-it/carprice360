@@ -86,7 +86,7 @@ public class Car {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    // ✅ Cột mới: lưu đường dẫn thư mục ảnh, VD: "image/cars/bmw/320/"
+
     @Column(name = "hinh_anh")
     private String hinhAnh;
 }

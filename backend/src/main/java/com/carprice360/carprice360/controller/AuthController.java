@@ -99,4 +99,21 @@ public class AuthController {
             ));
         }).orElse(ResponseEntity.notFound().build());
     }
+    // DELETE /api/auth/users/{id}
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
+        return userRepository.findById(id).map(user -> {
+            if ("ADMIN".equals(user.getVaiTro())) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "message", "Không thể xóa tài khoản ADMIN!"
+                ));
+            }
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "message", "Đã xóa tài khoản thành công!"
+            ));
+        }).orElse(ResponseEntity.notFound().build());
+    }
 }
