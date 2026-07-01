@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chi tiết Showroom - CarPrice360</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #E8002D; --dark: #0F0F1A; --white: #FFFFFF;
+    --gray: #F5F5F7; --text: #1D1D1F; --muted: #6E6E73;
+    --border: #E0E0E5;
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--white); color: var(--text); padding-bottom: 40px; }
+
+  /* ── HEADER (y hệt cardetail) ── */
+  header { background: #258cd1; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 20px rgba(0,0,0,.1); }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 56px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 32px; height: 32px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: #258cd1; }
+  .logo-text { font-size: 18px; font-weight: 700; color: white; letter-spacing: -.5px; }
+  nav { display: flex; gap: 10px; }
+  nav a { color: #333 !important; background: #fff; text-decoration: none; padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; transition: all .2s; box-shadow: 0 2px 4px rgba(0,0,0,.05); }
+  nav a:hover { background: #f0f0f0; }
+  nav a.active { background: #e31837 !important; color: white !important; }
+  .header-actions { display: flex; gap: 10px; }
+  .btn-login { padding: 7px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; text-decoration: none; }
+  .btn-outline { background: #fff; border: none; color: #333 !important; }
+  .btn-outline:hover { background: #f0f0f0; }
+  .btn-solid { background: #e31837; border: none; color: white !important; }
+  .btn-solid:hover { background: #c8001f; }
+
+  /* ── BREADCRUMB (y hệt cardetail) ── */
+  .breadcrumb { padding: 8px 40px; background: var(--gray); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--red); }
+  .breadcrumb .sep { color: #ccc; }
+  .breadcrumb .current { color: var(--text); font-weight: 600; }
+
+  /* ── MAIN LAYOUT  */
+  .detail-wrapper {
+    max-width: 1320px;
+    margin: 20px auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 32px;
+  }
+  /* ── GALLERY PANEL (y hệt cardetail) ── */
+  .gallery-panel { position: sticky; top: 64px; }
+  .gallery-main{
+    width:100%;
+    aspect-ratio:16/7;
+    border-radius:16px;
+    overflow:hidden;
+    background:#f0f0f5;
+  }
+  .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-main .img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg,#e8e8ee,#d5d5de); }
+
+  /* ── INFO PANEL (phải) ── */
+  .info-panel { display: flex; flex-direction: column; gap: 14px; }
+
+  /* Brand + tên + city */
+  .brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
+  .brand-logo-sm { height: 36px; object-fit: contain; }
+  .city-badge { background: var(--gray); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
+  .showroom-name { font-size: 26px; font-weight: 800; color: var(--dark); line-height: 1.25; }
+  .brand-tag { font-size: 13px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+
+  /* Info item (địa chỉ / hotline) */
+  .info-item {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.info-item .icon {
+    font-size: 22px;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+
+.info-item .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+}
+
+.info-item .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.phone-number {
+    color: var(--red);
+    font-size: 19px;
+    font-weight: 800;
+}
+
+  /* ── PHẦN XE CỦA HÃNG ── */
+  .cars-section { max-width: 1320px; margin: 24px auto 0; padding: 0 40px; }
+  .section-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+  .section-title span { color: var(--red); }
+  .car-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+  .car-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .25s; }
+  .car-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.12); border-color: var(--red); }
+  .car-img-wrap { width: 100%; height: 150px; overflow: hidden; background: var(--gray); }
+  .car-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .car-body { padding: 14px 16px; }
+  .car-brand-tag { font-size: 11px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+  .car-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+  .car-price { font-size: 16px; font-weight: 800; color: var(--red); }
+  .loading { text-align: center; padding: 40px; color: var(--muted); }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── MODAL (y hệt cardetail) ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 300; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 16px; padding: 36px; width: 420px; max-width: 90vw; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+  .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+  .modal-input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; margin-bottom: 12px; outline: none; transition: border .2s; }
+  .modal-input:focus { border-color: var(--red); }
+  .modal-btn { width: 100%; padding: 13px; background: var(--red); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; margin-top: 4px; }
+  .modal-btn:hover { background: #c8001f; }
+  .modal-close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; margin-top: -8px; }
+  .modal-switch { text-align: center; margin-top: 16px; font-size: 14px; color: var(--muted); }
+  .modal-switch a { color: var(--red); cursor: pointer; font-weight: 600; }
+  .msg { font-size: 13px; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; display: none; }
+  .msg.error { background: #fff0f0; color: #c00; border: 1px solid #fcc; display: block; }
+  .msg.success { background: #f0fff4; color: #1a7a3a; border: 1px solid #b2dfca; display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .header-top { padding: 0 16px; }
+    nav { display: none; }
+    .detail-wrapper { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; margin-top: 16px; }
+    .gallery-panel { position: static; }
+    .cars-section { padding: 0 16px; }
+    .car-grid { grid-template-columns: repeat(2, 1fr); }
+    .breadcrumb { padding: 10px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">C</div>
+      <span class="logo-text">CarPrice360</span>
+    </a>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="index.html#brands">Thương hiệu</a>
+      <a href="index.html#cars">Danh sách xe</a>
+      <a href="compare.html">So sánh xe</a>
+      <a href="showroom.html">Showroom</a>
+      <a href="saved.html">Xe đã lưu</a>
+    </nav>
+    <div class="header-actions" id="headerActions">
+      <a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a>
+      <a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── BREADCRUMB ── -->
+<div class="breadcrumb">
+  <a href="index.html">Trang chủ</a>
+  <span class="sep">›</span>
+  <a href="showroom.html">Showroom</a>
+  <span class="sep">›</span>
+  <span class="current" id="bcName">Chi tiết</span>
+</div>
+
+<!-- ── MAIN LAYOUT (y hệt cardetail) ── -->
+<div class="detail-wrapper">
+
+  <!-- TRÁI: ẢNH SHOWROOM 16/9 -->
+  <div class="gallery-panel">
+    <div class="gallery-main">
+      <img id="heroImg" src="" alt=""
+        onerror="this.parentElement.innerHTML='<div class=\'img-placeholder\'></div>'">
+    </div>
+  </div>
+
+  <!-- PHẢI: THÔNG TIN -->
+  <div class="info-panel">
+    <div class="brand-tag" id="infoBrandTag"></div>
+    <div class="showroom-name" id="infoName"></div>
+
+    <div class="brand-row">
+      <img id="infoBrandLogo" class="brand-logo-sm" src="" alt=""
+        onerror="this.style.display='none'" style="display:none">
+      <div class="city-badge" id="infoCityBadge"></div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ĐỊA CHỈ -->
+    <div class="info-item">
+      <div class="icon">📍</div>
+      <div>
+        <div class="label">Địa chỉ</div>
+        <div class="value" id="infoAddress">—</div>
+      </div>
+    </div>
+
+    <!-- HOTLINE -->
+    <div class="info-item">
+      <div class="icon">📞</div>
+      <div>
+        <div class="label">Hotline</div>
+        <div class="value" id="infoPhone">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── XE CỦA HÃNG ── -->
+<div class="cars-section">
+  <div class="section-title">Xe <span id="carBrandTitle"></span> đang có</div>
+  <div class="car-grid" id="carGrid">
+    <div class="loading"><div class="spinner"></div>Đang tải xe...</div>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('login')">×</span>
+    <h2>Đăng nhập</h2>
+    <div class="msg" id="loginMsg"></div>
+    <input class="modal-input" id="loginEmail" type="email" placeholder="Email" autocomplete="off">
+    <input class="modal-input" id="loginPass" type="password" placeholder="Mật khẩu" autocomplete="off">
+    <button class="modal-btn" onclick="doLogin()">Đăng nhập</button>
+    <div class="modal-switch">Chưa có tài khoản? <a onclick="switchModal('login','register')">Đăng ký ngay</a></div>
+  </div>
+</div>
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('register')">×</span>
+    <h2>Đăng ký tài khoản</h2>
+    <div class="msg" id="registerMsg"></div>
+    <input class="modal-input" id="regName" type="text" placeholder="Họ và tên">
+    <input class="modal-input" id="regEmail" type="email" placeholder="Email">
+    <input class="modal-input" id="regPass" type="password" placeholder="Mật khẩu">
+    <button class="modal-btn" onclick="doRegister()">Đăng ký</button>
+    <div class="modal-switch">Đã có tài khoản? <a onclick="switchModal('register','login')">Đăng nhập</a></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8080/api';
+let currentUser = null;
+
+/* ── DỮ LIỆU ĐỊA CHỈ + HOTLINE ── */
+const showroomInfo = {
+  // ── VinFast Hà Nội ──
+  "VinFast Tây Hồ":                            { address: "Số 1 Đường Võ Chí Công, P. Tứ Liên, Quận Tây Hồ, TP. Hà Nội", phone: "1900 232 389" },
+  "VinFast Mỹ Đình":                          { address: "Số 8 Phạm Hùng, P. Nghĩa Đô, TP. Hà Nội", phone: "0979 548 998" },
+  "VinFast Ocean Park":                        { address: "Tầng 1, TTTM Vincom Ocean Park, Vinhomes Ocean Park, Xã Gia Lâm, TP. Hà Nội", phone: "0929 012 222" },
+  "VinFast Phạm Văn Đồng":                    { address: "138 Phạm Văn Đồng, P. Đông Ngạc, TP. Hà Nội", phone: "0988 217 510" },
+  "VinFast Smart City":                        { address: "341 Âu Cơ, P. Hồng Hà, TP. Hà Nội", phone: "0919 796 333" },
+  "VinFast VMM Times City":                    { address: "Vincom Mega Mall Times City, 458 Minh Khai, P. Tương Mai, TP. Hà Nội", phone: "0962 592 000" },
+  "VinFast Thăng Long":                        { address: "Số 68 Trịnh Văn Bô, P. Xuân Phương, TP. Hà Nội", phone: "0962 642 886" },
+  "VinFast Trần Duy Hưng":                    { address: "119 Trần Duy Hưng, P. Đại Mỗ, TP. Hà Nội", phone: "0961 551 894" },
+  "VinFast Trường Chinh":                      { address: "162 Trường Chinh, P. Kim Liên, TP. Hà Nội", phone: "0961 595 625" },
+  "VinFast Nam Từ Liêm":                       { address: "Số 72 Đường Lê Đức Thọ, P. Mỹ Đình 2, Quận Nam Từ Liêm, TP. Hà Nội", phone: "1900 232 389" },
+  "VinFast VMM Royal City":                    { address: "Vincom Mega Mall Royal City, 72A Nguyễn Trãi, P. Khương Đình, TP. Hà Nội", phone: "0925 589 999" },
+  "VinFast Giải Phóng":                        { address: "Số 1 Đường Trịnh Văn Bô, P. Xuân Phương, TP. Hà Nội", phone: "0989 932 992" },
+  "VinFast Long Biên":                         { address: "Số 1 Đường Trịnh Văn Bô, P. Xuân Phương, TP. Hà Nội", phone: "0989 932 992" },
+  "Audi Hà Nội":                               { address: "Số 8 Phạm Hùng, P. Đại Mỗ, TP. Hà Nội", phone: "1800 888 861" },
+  "BMW Lê Duẩn":                               { address: "132 Lê Duẩn, P. Văn Miếu - Quốc Tử Giám, TP. Hà Nội", phone: "0904 337 688" },
+  "BMW Lê Văn Lương":                          { address: "68 Lê Văn Lương, P. Đại Mỗ, TP. Hà Nội", phone: "0936 808 699" },
+  "BMW Long Biên":                             { address: "01 Ngô Gia Tự, P. Bồ Đề, TP. Hà Nội", phone: "0938 908 488" },
+  "BMW Phạm Văn Đồng":                         { address: "Tầng 1, Tòa Leadvisor, 643 Phạm Văn Đồng, P. Xuân Phương, TP. Hà Nội", phone: "0904 337 688" },
+  "An Đô Ford":                                { address: "168 Phạm Văn Đồng, P. Đông Ngạc, TP. Hà Nội", phone: "0987 504 668" },
+  "Capital Ford":                              { address: "Ngã 3 Pháp Vân Km 8, Đường Giải Phóng, P. Định Công, TP. Hà Nội", phone: "0936 288 288" },
+  "Hà Nội Ford":                               { address: "311-313 Trường Chinh, P. Phương Liệt, TP. Hà Nội", phone: "0941 666 555" },
+  "Hà Thành Ford":                             { address: "Cụm CN Lai Xá, Xã Hoài Đức, TP. Hà Nội", phone: "0912 086 689" },
+  "Long Biên Ford":                            { address: "Số 3 Nguyễn Văn Linh, P. Bồ Đề, TP. Hà Nội", phone: "0888 132 266" },
+  "Mỹ Đình Ford":                              { address: "Số 2 Đường Tôn Thất Thuyết, P. Cầu Giấy, TP. Hà Nội", phone: "097 666 3993" },
+  "Tây Mỗ Ford":                               { address: "Tổ Dân phố Nhuệ Giang, P. Tây Mỗ, TP. Hà Nội", phone: "0981 272 686" },
+  "Thăng Long Ford":                           { address: "Số 105 Đường Láng Hạ, P. Đống Đa, TP. Hà Nội", phone: "0913 271 990" },
+  "Thanh Xuân Ford":                           { address: "Số 88 Đường Nguyễn Xiển, P. Khương Đình, TP. Hà Nội", phone: "0935 580 000" },
+  "Hyundai Phạm Hùng":                         { address: "16A Phạm Hùng, P. Nghĩa Đô, TP. Hà Nội", phone: "087 798 5555" },
+  "Hyundai An Khánh":                          { address: "C24 - Lô 01 Đô thị mới Geleximco Lê Trọng Tấn, Xã An Khánh, TP. Hà Nội", phone: "0911 586 555" },
+  "Hyundai Cầu Diễn":                          { address: "Ô Số 2, Lô 1, Cụm CN Lai Xá, Xã Hoài Đức, TP. Hà Nội", phone: "1900 561 212" },
+  "Hyundai Đông Anh":                          { address: "Quốc Lộ 3, Tổ 25, Xã Đông Anh, TP. Hà Nội", phone: "1900 561 212" },
+  "Hyundai Đông Đô":                           { address: "987 Tam Trinh, P. Yên Sở, TP. Hà Nội", phone: "0987 835 835" },
+  "Hyundai Giải Phóng":                        { address: "Số 510 Đường Ngọc Hồi, Xã Đại Thanh, TP. Hà Nội", phone: "0969 510 510" },
+  "Hyundai Gia Lâm":                           { address: "87 Nguyễn Huy Nhuận, KCN Phú Thị, Xã Gia Lâm, TP. Hà Nội", phone: "0981 355 555" },
+  "Hyundai Hà Đông":                           { address: "Tổ 17, Do Lộ, P. Chương Mỹ, TP. Hà Nội", phone: "0913 225 225" },
+  "Hyundai Lê Văn Lương":                      { address: "99 Võ Chí Công, P. Nghĩa Đô, TP. Hà Nội", phone: "0936 666 115" },
+  "Hyundai Long Biên":                         { address: "Số 3+5 Nguyễn Văn Linh, P. Bồ Đề, TP. Hà Nội", phone: "1900 561 212" },
+  "Hyundai Phạm Văn Đồng":                     { address: "Số 138 Phạm Văn Đồng, P. Đông Ngạc, TP. Hà Nội", phone: "1900 561 212" },
+  "Hyundai Sơn Tây":                           { address: "Km 35, Quốc Lộ 32, Xã Phúc Thọ, TP. Hà Nội", phone: "1900 561 212" },
+  "Hyundai Vũ Phạm Hàm":                       { address: "Tòa nhà E4, T1 Tòa CT3 Vũ Phạm Hàm, P. Cầu Giấy, TP. Hà Nội", phone: "0936 666 115" },
+  "Kia Bạch Đằng":                             { address: "315 Nguyễn Khoái, P. Hồng Hà, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Cầu Diễn":                              { address: "Km 10.5, Quốc Lộ 32, P. Xuân Phương, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Đống Đa":                               { address: "568 Đường Láng, P. Láng Hạ, Quận Đống Đa, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Giải Phóng":                            { address: "Km 10, Đường Giải Phóng, Tứ Hiệp, Thanh Trì, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Long Biên":                             { address: "105A Đường Lý Sơn, P. Ngọc Thụy, Quận Long Biên, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Phạm Văn Đồng":                         { address: "Lô đất CC2, Khu ĐT TP. Giao Lưu, P. Nghĩa Đô, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Sơn Tây":                               { address: "Khu Thành Ngạnh - P. Tùng Thiện, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Thanh Xuân":                            { address: "12 Khuất Duy Tiến, P. Khương Đình, TP. Hà Nội", phone: "1900 545 591" },
+  "Kia Yên Nghĩa":                             { address: "Số 899, Tổ 9, P. Phú Lương, TP. Hà Nội", phone: "1900 545 591" },
+  "Lexus Thăng Long":                          { address: "Ngã tư Phạm Hùng và Dương Đình Nghệ, P. Mỹ Đình 1, TP. Hà Nội", phone: "1800 588 888" },
+  "Mercedes-Benz An Du Phạm Hùng":            { address: "11 Phạm Hùng, P. Cầu Giấy, TP. Hà Nội", phone: "1900 666 888" },
+  "Mercedes-Benz Haxaco Kim Giang":           { address: "256 Kim Giang, P. Định Công, TP. Hà Nội", phone: "1800 6210" },
+  "Mercedes-Benz Haxaco Láng Hạ":            { address: "46 Láng Hạ, P. Láng Hạ, Quận Đống Đa, TP. Hà Nội", phone: "1800 6210" },
+  "Mercedes-Benz Vietnam Star Đại Từ":        { address: "Lô D5-1, KCN Hà Nội - Đài Tư, 386 Nguyễn Văn Linh, P. Phúc Lợi, TP. Hà Nội", phone: "1900 599 978" },
+  "Mercedes-Benz Vietnam Star Hoàn Kiếm":     { address: "05 Lê Thánh Tông, P. Phan Chu Trinh, Quận Hoàn Kiếm, TP. Hà Nội", phone: "1900 599 978" },
+  "Porsche Hà Nội":                            { address: "562 Nguyễn Văn Cừ, P. Gia Thụy, Quận Long Biên, TP. Hà Nội", phone: "1800 1010" },
+  "Toyota Giải Phóng":                         { address: "807 Giải Phóng, P. Giáp Bát, Quận Hoàng Mai, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Hà Đông":                            { address: "977-979 Đường Quang Trung kéo dài, P. Yên Nghĩa, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Hoàn Kiếm":                          { address: "Số 94 Ngô Thì Nhậm, P. Phạm Đình Hổ, Quận Hai Bà Trưng, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota IDC Hoài Đức":                       { address: "Km15+575, Quốc lộ 32, Thị trấn Trạm Trôi, Huyện Hoài Đức, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Long Biên":                          { address: "Số 7-9 Đường Nguyễn Văn Linh, P. Gia Thụy, Quận Long Biên, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Mỹ Đình":                            { address: "Số 15 Đường Phạm Hùng, P. Mỹ Đình 2, Quận Nam Từ Liêm, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Pháp Vân":                           { address: "Tổ 10, Khu Pháp Vân, P. Hoàng Liệt, Quận Hoàng Mai, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Thái Hòa Từ Liêm":                  { address: "Ngã 3 Tố Hữu - Mộ Lao, P. Trung Văn, Quận Nam Từ Liêm, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Thăng Long":                         { address: "Số 316 Đường Cầu Giấy, P. Dịch Vọng, Quận Cầu Giấy, TP. Hà Nội", phone: "1900 633 678" },
+  "Toyota Thanh Xuân":                         { address: "Số 315 Đường Trường Chinh, P. Khương Mai, Quận Thanh Xuân, TP. Hà Nội", phone: "1900 633 678" },
+  // HCM
+  "Audi Hồ Chí Minh":                         { address: "Số 6B Lầu 1, Đường Tôn Đức Thắng, P. Bến Nghé, Quận 1, TP. HCM", phone: "1800 888 898" },
+  "Audi Phú Mỹ Hưng":                         { address: "Khu dân cư Lavida, Đường Nguyễn Văn Linh, P. Tân Phong, Quận 7, TP. HCM", phone: "1800 888 898" },
+  "Audi Tân Bình":                             { address: "Lô IV-22 Tây Thạnh, P. Tây Thạnh, TP. HCM", phone: "1800 888 898" },
+  "BMW Bình Dương":                            { address: "56 Đại Lộ Bình Dương, KP Bình Giao, P. Thuận Giao, TP. HCM", phone: "0901 889 798" },
+  "BMW Hồ Chí Minh":                          { address: "P. Thủ Đức, TP. Hồ Chí Minh", phone: "1800 588 899" },
+  "BMW MINI Sala Quận 2":                      { address: "Số 12 Đường Mai Chí Thọ, P. An Khánh, TP. HCM", phone: "1800 588 899" },
+  "BMW Nguyễn Văn Trỗi":                      { address: "Số 80 Nguyễn Văn Trỗi, P. Phú Nhuận, TP. HCM", phone: "1800 588 899" },
+  "BMW Phú Mỹ Hưng":                          { address: "314 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM", phone: "1800 588 899" },
+  "Bà Rịa Ford":                               { address: "QL51, Phước Trung, Bà Rịa, Bà Rịa - Vũng Tàu", phone: "1900 599 998" },
+  "Bến Thành Ford":                            { address: "Số 39 Chế Lan Viên, P. Tây Thạnh, TP. HCM", phone: "1900 599 998" },
+  "Bình Dương Ford":                           { address: "Lô C13, Đường Hùng Vương, P. Bình Dương, TP. HCM", phone: "1900 599 998" },
+  "City Ford":                                 { address: "218 Quốc Lộ 13, P. Hiệp Bình, TP. HCM", phone: "1900 599 998" },
+  "Dĩ An Ford":                                { address: "28 Đường DT743, KP. Thống Nhất 1, P. Dĩ An, TP. HCM", phone: "1800 588 888" },
+  "Gia Định Ford":                             { address: "900 Quốc Lộ 1A, P. Thới An, TP. HCM", phone: "0933 681 123" },
+  "Nam Sài Gòn Ford":                          { address: "161F Dạ Nam, P. Chánh Hưng, TP. HCM", phone: "1800 588 888" },
+  "Phổ Quang Ford":                            { address: "104 Phổ Quang, P. Tân Sơn Hòa, TP. HCM", phone: "1900 565 650" },
+  "Phú Mỹ Ford":                               { address: "507C Xa Lộ Hà Nội, P. An Khánh, TP. HCM", phone: "1900 252 515" },
+  "Sài Gòn Ford":                              { address: "Số 61A Cao Thắng, P. Bàn Cờ, TP. HCM", phone: "093 206 9908" },
+  "Suối Tiên Ford":                            { address: "35 Hoàng Hữu Nam, P. Tăng Nhơn Phú, TP. HCM", phone: "0939 813 535" },
+  "Tân Thuận Ford":                            { address: "Lô DVTM-08 và DVTM-11, Đường Số 7, Khu CX Tân Thuận, TP. HCM", phone: "0916 489 919" },
+  "Vũng Tàu Ford":                             { address: "Số 40A, Đường 30/04, P. Tam Thắng, TP. HCM", phone: "1900 599 998" },
+  "Western Ford":                              { address: "530 Đường Kinh Dương Vương, P. An Lạc, TP. HCM", phone: "1900 636 636" },
+  "Hyundai An Phú":                            { address: "100 Võ Chí Công, P. Cát Lái, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Bà Rịa Vũng Tàu":                  { address: "Số 611 Quốc Lộ 51, KP. Hương Sơn, P. Long Hương, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Bình Dương":                        { address: "48A Đại Lộ Bình Dương, P. Phú Lợi, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Đông Sài Gòn":                     { address: "409 Đường Nguyễn Văn Bá, P. Thủ Đức, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Gia Định":                          { address: "166-168 Phạm Văn Đồng, P. Hạnh Thông, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Kinh Dương Vương":                  { address: "701 Kinh Dương Vương, P. An Lạc, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Miền Nam":                          { address: "175 Bình Long, P. Bình Hưng Hòa, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Ngọc An":                           { address: "70 Lương Định Của, Xã Bình Khánh, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Phú Mỹ Hưng":                      { address: "1052 Nguyễn Văn Linh, P. Tân Hưng, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Trường Chinh":                      { address: "Toà nhà H3 - 384 Hoàng Diệu, P. Xóm Chiếu, TP. HCM", phone: "1800 561 561" },
+  "Hyundai Việt Hàn":                          { address: "387 Quốc Lộ 13, P. Hiệp Bình, TP. HCM", phone: "1800 561 561" },
+  "Kia Bà Rịa":                                { address: "Quốc Lộ 51, P. Bà Rịa, TP. HCM", phone: "1900 545 591" },
+  "Kia Bình Dương":                            { address: "56/9 Đại Lộ Bình Dương, P. Thuận Giao, TP. HCM", phone: "0938 807 407" },
+  "Kia Bình Tân":                              { address: "75 Võ Văn Kiệt, P. An Lạc, TP. HCM", phone: "1900 545 591" },
+  "Kia Bình Triệu":                            { address: "153 Quốc Lộ 13, P. Hiệp Bình, TP. HCM", phone: "1900 545 591" },
+  "Kia Gò Vấp":                                { address: "189 Nguyễn Oanh, P. Gò Vấp, TP. HCM", phone: "0938 809 860" },
+  "Kia Hồ Chí Minh":                          { address: "P. Phú Thuận, TP. HCM", phone: "0938 801 888" },
+  "Kia Hùng Vương":                            { address: "8A Lý Thường Kiệt, P. Chợ Lớn, TP. HCM", phone: "0938 809 999" },
+  "Kia Kinh Dương Vương":                      { address: "309A Kinh Dương Vương, P. An Lạc, TP. HCM", phone: "0988 806 868" },
+  "Kia Nguyễn Văn Trỗi":                      { address: "80 Nguyễn Văn Trỗi, P. Phú Nhuận, TP. HCM", phone: "0938 807 607" },
+  "Kia Phan Huy Ích":                          { address: "385 Phan Huy Ích, P. An Hội Tây, TP. HCM", phone: "0944 033 035" },
+  "Kia Phú Mỹ Hưng":                          { address: "314 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM", phone: "0903 091 377" },
+  "Kia Tân Sơn Nhất":                         { address: "Số 7 Hoàng Minh Giám, P. Đức Nhuận, TP. HCM", phone: "0938 807 607" },
+  "Kia Tân Uyên":                              { address: "60 Nguyễn Văn Linh, P. Tân Hiệp, TP. HCM", phone: "0938 806 868" },
+  "Kia Thảo Điền":                             { address: "03 Quốc Hương, P. An Khánh, TP. HCM", phone: "0938 807 607" },
+  "Kia Thiso Sala":                            { address: "10 Mai Chí Thọ, P. An Khánh, TP. HCM", phone: "0938 809 999" },
+  "Kia Thủ Dầu Một":                           { address: "1220 Đại Lộ Bình Dương, P. Chánh Hiệp, TP. HCM", phone: "0938 807 407" },
+  "Kia Trường Chinh":                          { address: "38 Chế Lan Viên, P. Tây Thạnh, TP. HCM", phone: "0938 807 607" },
+  "Kia Vũng Tàu":                              { address: "426 Đường Thống Nhất Mới, P. Tam Thắng, TP. HCM", phone: "0938 806 868" },
+  "Lexus Trung Tâm Sài Gòn":                  { address: "264 Trần Hưng Đạo, P. Cầu Ông Lãnh, TP. HCM", phone: "1800 588 885" },
+  "Mercedes-Benz Haxaco Điện Biên Phủ":       { address: "333 Điện Biên Phủ, P. An Hội Đông, TP. HCM", phone: "0938 688 333" },
+  "Mercedes-Benz Haxaco Võ Văn Kiệt":         { address: "2008 Đại Lộ Võ Văn Kiệt, P. An Lạc, TP. HCM", phone: "0909 888 200" },
+  "Mercedes-Benz Vietnam Star Bình Dương":     { address: "Số 4, The Canary, Đại Lộ Bình Dương, P. Bình Hòa, TP. HCM", phone: "0919 967 777" },
+  "Mercedes-Benz Vietnam Star Chế Lan Viên":  { address: "Số 38 Chế Lan Viên, P. Tây Thạnh, TP. HCM", phone: "1800 6142" },
+  "Mercedes-Benz Vietnam Star Phú Mỹ Hưng":   { address: "811-813 Nguyễn Văn Linh, P. Tân Hưng, TP. HCM", phone: "0906 777 111" },
+  "Mercedes-Benz Vietnam Star Trường Chinh":   { address: "32 Tân Thắng, P. Bình Hưng Hòa, TP. HCM", phone: "0906 777 222" },
+  "Mercedes-Benz Vũng Tàu":                   { address: "30 Tháng 4, P. Tam Thắng, TP. HCM", phone: "0919 967 777" },
+  "Porsche Sài Gòn":                           { address: "KCX Tân Thuận, Số 4 Đường Số 7, P. Tân Thuận, TP. HCM", phone: "1800 646 888" },
+  "Toyota An Sương":                           { address: "382 Quốc Lộ 22, P. Trung Mỹ Tây, TP. HCM", phone: "0909 550 660" },
+  "Toyota Bến Thành":                          { address: "Số 262 Trần Hưng Đạo, P. Cầu Ông Lãnh, TP. HCM", phone: "0909 800 700" },
+  "Toyota Bình Dương":                         { address: "Lô C13 Đường Hùng Vương, P. Bình Dương, TP. HCM", phone: "0909 888 911" },
+  "Toyota Đông Sài Gòn":                       { address: "507 Đ. Võ Nguyên Giáp, P. An Khánh, TP. HCM", phone: "028 3512 8888" },
+  "Toyota Hiroshima Tân Cảng":                 { address: "63A Nguyễn Văn Lượng, P. Gò Vấp, TP. HCM", phone: "028 3985 6666" },
+  "Toyota Lý Thường Kiệt":                     { address: "151A Lý Thường Kiệt, P. Tân Hòa, TP. HCM", phone: "028 3863 8888" },
+  "Toyota Ninh Kiều":                          { address: "26 Kinh Dương Vương, P. Phú Lâm, TP. HCM", phone: "0909 635 535" },
+  "Toyota Phú Mỹ Hưng":                        { address: "65 Đường số 2, Tổ 9, Khu dân cư ven sông, P. Tân Hưng, TP. HCM", phone: "0909 600 885" },
+  "Toyota Tân Cảng":                           { address: "15 Bùi Thanh Khiết, Khu phố 3, Xã Tân Nhựt, TP. HCM", phone: "0909 808 889" },
+  "Toyota Tây Ninh":                           { address: "168 Đường 3/2, P. Rạch Dừa, TP. HCM", phone: "0909 686 838" },
+  "Toyota Tsusho Bình Dương":                  { address: "56 Đại Lộ Bình Dương, P. Bình Hòa, TP. HCM", phone: "0909 888 911" },
+  "Toyota Used Car Đông Sài Gòn":              { address: "507 Đ. Võ Nguyên Giáp, P. An Khánh, TP. HCM", phone: "028 3512 8888" },
+  "Toyota Vũng Tàu":                           { address: "Số 168 Đường 30 Tháng 4, P. Rạch Dừa, TP. Bà Rịa - Vũng Tàu", phone: "0909 686 838" },
+  "Toyota An Thành":                           { address: "Số 7 Đường Số 7, P. Tân Phú, Quận 7, TP. HCM", phone: "0909 550 660" },
+  "Toyota Nguyễn Văn Lương":                   { address: "63A Nguyễn Văn Lượng, P. Gò Vấp, TP. HCM", phone: "028 3985 6666" },
+  "Toyota Hùng Vương":                         { address: "8A Lý Thường Kiệt, P. Tân Thành, Quận 6, TP. HCM", phone: "0909 800 700" },
+  "VinFast Cộng Hòa":                          { address: "15-17 Cộng Hòa, P. Tân Sơn Nhất, TP. HCM", phone: "1900 232 389" },
+  "VinFast Landmark 81":                       { address: "Số 464 Kinh Dương Vương, P. An Lạc, TP. HCM", phone: "1900 232 389" },
+  "VinFast Phú Mỹ Hưng":                      { address: "1489 Nguyễn Văn Linh, P. Tân Hưng, Quận 7, TP. HCM", phone: "1900 232 389" },
+  "VinFast Quận 2":                            { address: "Số 391 Xa lộ Hà Nội, P. An Khánh, TP. HCM", phone: "1900 232 389" },
+  "VinFast Sala":                              { address: "786B Nguyễn Kiệm, P. Hạnh Thông, TP. HCM", phone: "0939 680 686" },
+  "VinFast An Thái":                           { address: "Khu đô thị Vinhomes Grand Park, P. Long Thạnh Mỹ, TP. HCM", phone: "1900 232 389" },
+  "VinFast Đông Sài Gòn":                      { address: "Số 1 Võ Nguyên Giáp, P. An Khánh, Quận 2, TP. HCM", phone: "1900 232 389" },
+  "VinFast Gò Vấp":                            { address: "Số 186 Quang Trung, P. Gò Vấp, TP. HCM", phone: "1900 232 389" },
+  "VinFast Nam Thái":                          { address: "Lô NT-02, Khu dân cư Nam Thái, P. Phú Mỹ, Quận 7, TP. HCM", phone: "1900 232 389" },
+  "VinFast Nhà Bè":                            { address: "Đường Nguyễn Hữu Thọ, P. Nhà Bè, TP. HCM", phone: "1900 232 389" },
+  "VinFast Quang Trung":                       { address: "190 Quang Trung, P. Gò Vấp, TP. HCM", phone: "1900 232 389" },
+  "VinFast Sài Gòn":                           { address: "Số 1 Lê Duẩn, P. Bến Nghé, Quận 1, TP. HCM", phone: "1900 232 389" },
+  "VinFast Vũng Tàu":                          { address: "Đường 30 Tháng 4, P. Rạch Dừa, TP. Bà Rịa - Vũng Tàu", phone: "1900 232 389" },
+  "VinFast Thảo Điền":                         { address: "190 Quang Trung, P. Gò Vấp, TP. HCM", phone: "1900 232 389" },
+};
+
+const brandLogos = {
+  'Audi':         'image/cars/audi/logo/logo-audi.png',
+  'BMW':          'image/cars/bmw/logo/logo-bmw.png',
+  'Ford':         'image/cars/ford/logo/logo-ford.png',
+  'Hyundai':      'image/cars/hyundai/logo/logo-hyundai.png',
+  'Kia':          'image/cars/kia/logo/logo-kia.png',
+  'Lexus':        'image/cars/lexus/logo/logo-lexus.png',
+  'Mercedes-Benz':'image/cars/mercedes-benz/logo/logo-mercedes-benz.png',
+  'Porsche':      'image/cars/porsche/logo/logo-porsche.png',
+  'Toyota':       'image/cars/toyota/logo/logo-toyota.png',
+  'VinFast':      'image/cars/vinFast/logo/logo-vinfast.png',
+};
+
+const brandCarMap = { 'Mercedes-Benz': 'Mercedes' };
+
+/* ── INIT ── */
+function init() {
+  const p = new URLSearchParams(window.location.search);
+  const name  = p.get('name')  || '';
+  const brand = p.get('brand') || '';
+  const city  = p.get('city')  || '';
+  const image = p.get('image') || '';
+
+  document.title = name + ' - CarPrice360';
+  document.getElementById('bcName').textContent = name;
+
+  // Ảnh
+  const img = document.getElementById('heroImg');
+  img.src = image; img.alt = name;
+
+  // Tên + brand + city
+  document.getElementById('infoBrandTag').textContent = brand;
+  document.getElementById('infoName').textContent = name;
+  document.getElementById('infoCityBadge').textContent = city;
+
+  // Logo
+  const logo = brandLogos[brand];
+  if (logo) {
+    const el = document.getElementById('infoBrandLogo');
+    el.src = logo; el.style.display = 'block';
+  }
+
+  // Địa chỉ + hotline từ data map (trim để tránh khoảng trắng thừa từ URL)
+  const info = showroomInfo[name.trim()];
+  if (info) {
+    document.getElementById('infoAddress').textContent = info.address;
+    document.getElementById('infoPhone').innerHTML =
+    `<span class="phone-number">${info.phone}</span>`;
+  } else {
+    document.getElementById('infoAddress').textContent = 'Đang cập nhật';
+    document.getElementById('infoPhone').textContent = 'Đang cập nhật';
+  }
+
+  // Tiêu đề xe
+  document.getElementById('carBrandTitle').textContent = brand;
+
+  loadCarsByBrand(brand);
+}
+
+function formatPrice(gia) {
+  if (gia >= 1000) return (gia/1000).toFixed(gia%1000===0?0:1) + ' tỷ';
+  return gia + ' triệu';
+}
+
+async function loadCarsByBrand(brand) {
+  const grid = document.getElementById('carGrid');
+  const dbBrand = brandCarMap[brand] || brand;
+  try {
+    const res = await fetch(`${API}/cars`);
+    const cars = await res.json();
+    const filtered = cars.filter(c => c.thuongHieu === dbBrand);
+    if (!filtered.length) { grid.innerHTML = '<div class="loading">Chưa có dữ liệu xe</div>'; return; }
+    grid.innerHTML = filtered.map(car => {
+      const imgSrc = car.hinhAnh ? car.hinhAnh + '1.png' : '';
+      return `<div class="car-card" onclick="location.href='cardetail.html?id=${car.id}'">
+        <div class="car-img-wrap">${imgSrc ? `<img src="${imgSrc}" alt="${car.tenXe}" onerror="this.style.display='none'">` : ''}</div>
+        <div class="car-body">
+          <div class="car-brand-tag">${car.thuongHieu}</div>
+          <div class="car-name">${car.tenXe}</div>
+          <div class="car-price">${formatPrice(car.gia)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch { grid.innerHTML = '<div class="loading">⚠️ Không thể kết nối server</div>'; }
+}
+
+/* ── AUTH (y hệt cardetail) ── */
+function openModal(type) {
+  if (type === 'login') { document.getElementById('loginEmail').value=''; document.getElementById('loginPass').value=''; const m=document.getElementById('loginMsg'); m.className='msg'; m.textContent=''; }
+  if (type === 'register') { document.getElementById('regName').value=''; document.getElementById('regEmail').value=''; document.getElementById('regPass').value=''; const m=document.getElementById('registerMsg'); m.className='msg'; m.textContent=''; }
+  document.getElementById(type+'Modal').classList.add('open');
+}
+function closeModal(type) { document.getElementById(type+'Modal').classList.remove('open'); }
+function switchModal(from, to) { closeModal(from); openModal(to); }
+
+async function doLogin() {
+  const email=document.getElementById('loginEmail').value, matKhau=document.getElementById('loginPass').value, msg=document.getElementById('loginMsg');
+  try {
+    const res=await fetch(`${API}/auth/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,matKhau})});
+    const data=await res.json();
+    if(data.success){
+      if(data.vaiTro==='ADMIN'){window.location.href='admin.html';return;}
+      currentUser=data; localStorage.setItem('loggedInUser',JSON.stringify(data)); closeModal('login');
+      document.getElementById('headerActions').innerHTML=`<span style="color:white;padding:8px 14px;font-size:14px">👋 ${data.hoTen}</span><a class="btn-login btn-outline" onclick="logout()">Đăng xuất</a>`;
+    } else { msg.className='msg error'; msg.textContent=data.message; }
+  } catch { msg.className='msg error'; msg.textContent='Lỗi kết nối server!'; }
+}
+
+async function doRegister() {
+  const hoTen=document.getElementById('regName').value, email=document.getElementById('regEmail').value, matKhau=document.getElementById('regPass').value, msg=document.getElementById('registerMsg');
+  try {
+    const res=await fetch(`${API}/auth/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hoTen,email,matKhau})});
+    const data=await res.json();
+    if(data.success){msg.className='msg success';msg.textContent='Đăng ký thành công!';setTimeout(()=>switchModal('register','login'),1500);}
+    else{msg.className='msg error';msg.textContent=data.message;}
+  } catch { msg.className='msg error'; msg.textContent='Lỗi kết nối server!'; }
+}
+
+function logout() {
+  currentUser=null; localStorage.removeItem('loggedInUser');
+  document.getElementById('headerActions').innerHTML=`<a class="btn-login btn-outline" onclick="openModal('login')">Đăng nhập</a><a class="btn-login btn-solid" onclick="openModal('register')">Đăng ký</a>`;
+}
+
+document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); }));
+
+function restoreSession() {
+  const saved=localStorage.getItem('loggedInUser'); if(!saved) return;
+  currentUser=JSON.parse(saved);
+  document.getElementById('headerActions').innerHTML=`<span style="color:white;padding:8px 14px;font-size:14px">👋 ${currentUser.hoTen}</span><a class="btn-login btn-outline" onclick="logout()">Đăng xuất</a>`;
+}
+restoreSession();
+init();
+</script>
+</body>
+</html>
