@@ -19,7 +19,7 @@
     }
     body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: var(--text); }
 
-    /*HEADER*/ 
+    /* ─── HEADER ─── */
     header {
       background: var(--blue);
       position: fixed; top: 0; left: 0; right: 0; z-index: 300;
@@ -37,10 +37,10 @@
     .hbtn-logout { background: var(--red); border-color: var(--red); color: white; }
     .hbtn-logout:hover { background: #c8001f; }
 
-    /* LAYOUT */
+    /* ─── LAYOUT ─── */
     .layout { display: flex; padding-top: 64px; min-height: 100vh; }
 
-    /* SIDEBAR  */
+    /* ─── SIDEBAR ─── */
     .sidebar { width: var(--sidebar); background: white; position: fixed; top: 64px; left: 0; bottom: 0; border-right: 1px solid var(--border); padding: 10px 0; overflow-y: auto; z-index: 100; }
     .sidebar-label { padding: 16px 16px 6px; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; }
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; margin: 2px 8px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 500; color: #444; transition: all .2s; user-select: none; }
@@ -50,17 +50,17 @@
     .nav-count { margin-left: auto; background: var(--gray); color: var(--muted); border-radius: 20px; padding: 1px 8px; font-size: 11px; font-weight: 700; }
     .nav-item.active .nav-count { background: #ffd6de; color: var(--red); }
 
-    /*  MAIN  */
+    /* ─── MAIN ─── */
     .main { margin-left: var(--sidebar); flex: 1; padding: 28px 32px; }
 
-    /* PAGES  */
+    /* ─── PAGES ─── */
     .page { display: none; }
     .page.active { display: block; }
     .page-title { margin-bottom: 22px; }
     .page-title h2 { font-size: 22px; font-weight: 800; color: var(--dark); }
     .page-title p { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-    /* STAT CARDS  */
+    /* ─── STAT CARDS ─── */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: white; border-radius: 14px; padding: 20px; border: 1px solid var(--border); display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
     .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
@@ -71,19 +71,19 @@
     .stat-num { font-size: 30px; font-weight: 800; color: var(--dark); line-height: 1; }
     .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-    /*  CARD */
+    /* ─── CARD ─── */
     .card { background: white; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.04); margin-bottom: 20px; }
     .card-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .card-header h3 { font-size: 15px; font-weight: 700; }
     .card-header .ch-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-    /*  TOOLBAR  */
+    /* ─── TOOLBAR ─── */
     .toolbar { padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .t-search { flex: 1; min-width: 180px; padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border .2s; font-family: inherit; }
     .t-search:focus { border-color: var(--blue); }
     .t-select { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: white; cursor: pointer; font-family: inherit; }
 
-    /*  BUTTONS  */
+    /* ─── BUTTONS ─── */
     .btn { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid; transition: all .2s; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-family: inherit; }
     .btn-primary { background: var(--red); border-color: var(--red); color: white; }
     .btn-primary:hover { background: #c8001f; }
@@ -98,7 +98,7 @@
     .btn-sm { padding: 5px 11px; font-size: 12px; border-radius: 6px; }
     .action-row { display: flex; gap: 6px; }
 
-    /* TABLE  */
+    /* ─── TABLE ─── */
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     thead tr { background: var(--gray); }
@@ -109,7 +109,7 @@
     .car-thumb { width: 62px; height: 46px; object-fit: cover; border-radius: 6px; background: var(--gray); display: block; }
     .no-thumb { width: 62px; height: 46px; background: var(--gray); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-    /* BADGES */
+    /* ─── BADGES ─── */
     .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; white-space: nowrap; }
     .badge-red { background: #fff0f3; color: var(--red); }
     .badge-green { background: #e8f5e9; color: #2e7d32; }
@@ -118,7 +118,7 @@
     .badge-gray { background: var(--gray); color: var(--muted); }
     .badge-teal { background: #e0f2f1; color: #00695c; }
 
-    /*  MODAL  */
+    /* ─── MODAL ─── */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500; align-items: flex-start; justify-content: center; padding: 40px 16px 40px; overflow-y: auto; }
     .modal-overlay.open { display: flex; }
     .modal { background: white; border-radius: 16px; width: 700px; max-width: 96vw; box-shadow: 0 24px 80px rgba(0,0,0,.25); margin: auto; }
@@ -130,7 +130,7 @@
     .modal-body { padding: 24px; }
     .modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; background: #fafafa; border-radius: 0 0 16px 16px; }
 
-    /* FORM  */
+    /* ─── FORM ─── */
     .form-section { font-size: 12px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: .8px; margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
     .form-section:first-child { margin-top: 0; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -142,7 +142,7 @@
     .form-control:focus { border-color: var(--blue); }
     select.form-control { cursor: pointer; }
 
-    /*  BRANDS  */
+    /* ─── BRANDS ─── */
     .brand-grid-admin { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px; padding: 20px; }
     .brand-card-admin { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; transition: all .2s; }
     .brand-card-admin:hover { border-color: var(--blue); box-shadow: 0 4px 14px rgba(0,0,0,.08); transform: translateY(-2px); }
@@ -151,28 +151,28 @@
     .brand-card-admin .bcount { font-size: 12px; color: var(--muted); margin-top: 3px; }
     .brand-card-admin .bactions { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
 
-    /* USERS  */
+    /* ─── USERS ─── */
     .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
     .user-info { display: flex; align-items: center; gap: 10px; }
-    /*  LOADING / EMPTY  */
+    /* ─── LOADING / EMPTY ─── */
     .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 12px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading-box { text-align: center; padding: 60px 20px; color: var(--muted); }
     .no-data { text-align: center; padding: 40px; color: var(--muted); font-size: 15px; grid-column: 1/-1; }
 
-    /*  CONFIRM  */
+    /* ─── CONFIRM ─── */
     .confirm-body { text-align: center; padding: 16px 0 8px; }
     .confirm-icon { font-size: 50px; margin-bottom: 12px; }
     .confirm-body p { font-size: 15px; color: var(--muted); line-height: 1.6; }
     .confirm-body strong { color: var(--text); }
 
-    /*  TOAST  */
+    /* ─── TOAST ─── */
     .toast { position: fixed; bottom: 24px; right: 24px; background: #1D1D1F; color: white; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all .3s; z-index: 999; max-width: 340px; }
     .toast.show { opacity: 1; transform: translateY(0); }
     .toast.toast-ok { background: #2e7d32; }
     .toast.toast-err { background: #c62828; }
 
-    /*  DASHBOARD  */
+    /* ─── DASHBOARD ─── */
     .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
     @media (max-width: 1100px) { .dash-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
     .mini-car { display: flex; align-items: center; gap: 12px; }
@@ -195,7 +195,7 @@
 </head>
 <body>
 
-<!--  HEADER  -->
+<!-- ═══════════════ HEADER ═══════════════ -->
 <header>
 <div class="logo">
   <div class="logo-icon">C</div>
@@ -208,10 +208,10 @@
   </div>
 </header>
 
-<!--  LAYOUT  -->
+<!-- ═══════════════ LAYOUT ═══════════════ -->
 <div class="layout">
 
-  <!--  SIDEBAR  -->
+  <!-- ─── SIDEBAR ─── -->
   <nav class="sidebar">
     <div class="sidebar-label">Quản lý</div>
     <div class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')">
@@ -230,10 +230,10 @@
     </div>
   </nav>
 
-  <!--  MAIN  -->
+  <!-- ─── MAIN ─── -->
   <main class="main">
 
-    <!-- PAGE: DASHBOARD  -->
+    <!-- ════ PAGE: DASHBOARD ════ -->
     <div class="page active" id="page-dashboard">
       <div class="page-title">
         <h2>Dashboard</h2>
@@ -313,7 +313,7 @@
       </div>
 
     </div>
-    <!--  PAGE: CARS  -->
+    <!-- ════ PAGE: CARS ════ -->
     <div class="page" id="page-cars">
       <div class="page-title">
         <h2>Quản lý Xe</h2>
@@ -381,10 +381,10 @@
       </div>
     </div>
 
-    <!--  PAGE: BRANDS  -->
+    <!-- ════ PAGE: BRANDS ════ -->
     
 
-    <!--  PAGE: USERS -->
+    <!-- ════ PAGE: USERS ════ -->
     <div class="page" id="page-users">
       <div class="page-title">
         <h2>Quản lý Người dùng</h2>
@@ -414,6 +414,7 @@
                 <th>Trạng thái</th>
                 <th>Ngày tạo</th>
                 <th>Thao tác</th>
+                <th>Xóa</th> 
               </tr>
             </thead>
             <tbody id="usersTableBody">
@@ -427,7 +428,7 @@
   </main>
 </div><!-- end layout -->
 
-<!--  MODAL: ADD/EDIT CAR  -->
+<!-- ═══════════════ MODAL: ADD/EDIT CAR ═══════════════ -->
 <div class="modal-overlay" id="carModal">
   <div class="modal">
     <div class="modal-head">
@@ -624,7 +625,7 @@
   </div>
 </div>
 
-<!--  MODAL: CONFIRM DELETE  -->
+<!-- ═══════════════ MODAL: CONFIRM DELETE ═══════════════ -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal modal-sm">
     <div class="modal-head">
@@ -647,7 +648,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!--  SCRIPT  -->
+<!-- ═══════════════ SCRIPT ═══════════════ -->
 <script>
 const API = 'http://localhost:8080/api';
 let allCars = [];
@@ -656,12 +657,12 @@ let editingCarId = null;
 let pendingAction = null;
 let currentHinhAnh = null; 
 
-
+/* ─── Lấy ảnh động từ API (car.hinhAnh) ─── */
 function getCarImage(car) {
   return car && car.hinhAnh ? car.hinhAnh + '1.png' : '';
 }
 
-
+/* ─── Logo thương hiệu — thêm dòng mới khi có brand mới ─── */
 const brandLogos = {
   'Audi':     'image/cars/audi/logo/logo-audi.png',
   'BMW':      'image/cars/bmw/logo/logo-bmw.png',
@@ -674,7 +675,7 @@ const brandLogos = {
   'Toyota':   'image/cars/toyota/logo/logo-toyota.png',
   'VinFast':  'image/cars/vinFast/logo/logo-vinfast.png',
 };
-
+/* ✅ Khi thêm thương hiệu mới: thêm 1 dòng vào brandLogos + đặt file logo vào image/cars/{brand}/logo/ */
 function getBrandLogo(brand) {
   return brandLogos[brand] || '';
 }
@@ -696,7 +697,8 @@ function formatPrice(gia) {
 function checkAuth() {
   const user = JSON.parse(sessionStorage.getItem('adminUser') || 'null');
   if (!user || user.vaiTro !== 'ADMIN') {
-  
+    // Allow access if coming from direct navigation during development
+    // In production you should enforce: window.location.href = 'index.html';
     document.getElementById('adminGreeting').textContent = ' Admin';
     return;
   }
@@ -708,7 +710,7 @@ function logout() {
   sessionStorage.removeItem('adminUser');
   window.location.href = 'index.html';
 }
-/*  PAGE SWITCHING  */
+/* ════ PAGE SWITCHING ════ */
 function switchPage(name) {
  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
  document.querySelector(`[data-page="${name}"]`).classList.add('active');
@@ -722,7 +724,7 @@ function switchPage(name) {
  }
 }
 
-/*  DASHBOARD  */
+/* ════ DASHBOARD ════ */
 async function loadDashboard() {
   try {
     const res = await fetch(`${API}/cars`);
@@ -789,7 +791,7 @@ async function loadDashboard() {
   loadLatestUsers();
 }
 
-/*  CARS  */
+/* ════ CARS ════ */
 async function loadCars() {
   document.getElementById('carsTableBody').innerHTML =
     `<tr><td colspan="10"><div class="loading-box"><div class="spinner"></div>Đang tải...</div></td></tr>`;
@@ -857,7 +859,7 @@ function renderCarsTable() {
   `).join('');
 }
 
-/*  Car Modal  */
+/* ─── Car Modal ─── */
 function openCarModal(carId) {
   editingCarId = carId;
   currentHinhAnh = null; 
@@ -1002,7 +1004,7 @@ if(imageFiles.length > 0 &&
   }
 }
 
-/*  Delete Car  */
+/* ─── Delete Car ─── */
 function confirmDeleteCar(id, name) {
   pendingAction = async () => {
     try {
@@ -1028,7 +1030,7 @@ function executeConfirm() {
   if (pendingAction) pendingAction();
 }
 
-/*  BRANDS  */
+/* ════ BRANDS ════ */
 async function loadBrands() {
   if (!allCars.length) {
     try {
@@ -1071,7 +1073,7 @@ function filterCarsByBrand(brand) {
         });
     }, 100);
 }
-/* USERS  */
+/* ════ USERS ════ */
 async function loadUsers() {
   document.getElementById('usersTableBody').innerHTML =
     `<tr><td colspan="6"><div class="loading-box"><div class="spinner"></div>Đang kết nối server...</div></td></tr>`;
@@ -1173,6 +1175,16 @@ function renderUsersTable() {
            </button>`
   }
 </td>
+    <td>
+      ${
+        u.vaiTro === 'ADMIN'
+          ? '<span style="color:var(--muted)">—</span>'
+          : `<button class="btn btn-danger btn-sm"
+              onclick="deleteUser(${u.id},'${u.hoTen?.replace(/'/g,"\\'")}')">
+              🗑️ Xóa
+            </button>`
+      }
+    </td>
     </tr>
   `).join('');
 }
@@ -1205,7 +1217,23 @@ async function unblockUser(id, name) {
   }
 }
 
-/*  TOAST  */
+async function deleteUser(id, name) {
+  if (!confirm(`Xóa vĩnh viễn tài khoản "${name}"?\nHành động này không thể hoàn tác!`)) return;
+  try {
+    const res = await fetch(`${API}/auth/users/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`🗑️ Đã xóa tài khoản "${name}"`, 'ok');
+      loadUsers();
+    } else {
+      showToast('❌ ' + data.message, 'err');
+    }
+  } catch {
+    showToast('❌ Không thể xóa — kiểm tra server', 'err');
+  }
+}
+
+/* ════ TOAST ════ */
 function showToast(msg, type = '') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1214,7 +1242,7 @@ function showToast(msg, type = '') {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-/*  MODAL CLOSE ON OVERLAY CLICK  */
+/* ════ MODAL CLOSE ON OVERLAY CLICK ════ */
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => {
     if (e.target === el) {
@@ -1225,7 +1253,7 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   });
 });
 
-/*  INIT  */
+/* ════ INIT ════ */
 checkAuth();
 loadDashboard();
 document

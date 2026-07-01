@@ -172,8 +172,9 @@
     border:1.5px solid var(--border);
     border-radius:8px;
     font-size:15px;
+    outline: none;
    }
-    .search-input:focus { border-color: var(--text); }
+    .search-input:focus { border-color: var(--red); }
     .btn-search{
     width:100%;
     padding:12px;
@@ -402,7 +403,7 @@
   <div class="search-box">
     <div class="search-row">
       <input class="search-input" id="searchInput" placeholder="🔍  Tìm kiếm tên xe, thương hiệu..." oninput="filterCars()">
-      <button class="btn-search" onclick="document.getElementById('cars')?.scrollIntoView({ behavior: 'smooth' }); filterCars();">Tìm ngay</button>
+      <button class="btn-search" onclick="handleSearchSubmit()">Tìm ngay</button>
     </div>
     <div class="filter-row">
       <select class="filter-select" id="filterBrand" onchange="filterCars()">
@@ -523,12 +524,28 @@ function getCarImage(car) {
   return car && car.hinhAnh ? car.hinhAnh + '1.png' : '';
 }
 
-// Đợi toàn bộ HTML tải xong để xử lý chuyển class active khi bấm nút
-document.addEventListener("DOMContentLoaded", function() {
+// Sao chép nguyên logic tìm kiếm từ showroom.html
+function handleSearchSubmit() {
+  const searchInput = document.getElementById('searchInput');
+  const keyword = searchInput ? searchInput.value.trim() : '';
+  if (keyword === '') {
+    searchInput.focus();
+    return;
+  }
+  filterCars();
+  const carsSection = document.getElementById('cars');
+  if (carsSection) {
+    const yOffset = -74;
+    const y = carsSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// Bấm Enter trong ô tìm kiếm cũng submit (giống showroom)
+document.addEventListener('DOMContentLoaded', function() {
   const menuItems = document.querySelectorAll('nav a');
   const logoHome = document.getElementById('logo-home');
 
-  // 1. Khi bấm vào các nút Menu điều hướng
   menuItems.forEach(item => {
     item.addEventListener('click', function(e) {
       if (this.getAttribute('href') === '#' || this.getAttribute('href') === '') {
@@ -539,13 +556,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // 2. Khi bấm vào Logo CarPrice360 thì nhảy về Trang chủ
   if (logoHome) {
     logoHome.addEventListener('click', function(e) {
       menuItems.forEach(nav => nav.classList.remove('active'));
-      if (menuItems.length > 0) {
-        menuItems[0].classList.add('active'); // Kích hoạt nút đầu tiên (Trang chủ)
-      }
+      if (menuItems.length > 0) menuItems[0].classList.add('active');
+    });
+  }
+
+  // ← Thêm: Enter trong ô tìm kiếm
+  const inputEl = document.getElementById('searchInput');
+  if (inputEl) {
+    inputEl.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') handleSearchSubmit();
     });
   }
 });

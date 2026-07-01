@@ -471,8 +471,12 @@ function setBrand(brand) {
   activeBrand = brand; 
   renderShowrooms();
   document.querySelectorAll('.brand-card').forEach(el => el.classList.remove('active'));
-  activeBrand = ''; 
-  document.getElementById('showroomGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  activeBrand = '';
+  const resultBar = document.querySelector('.result-bar');
+  if (resultBar) {
+    const y = resultBar.getBoundingClientRect().top + window.pageYOffset - 74;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
 }
 
 /* ── NAVIGATE TO DETAIL ── */
@@ -633,7 +637,24 @@ function restoreSession() {
 /* ── INIT ── */
 restoreSession();
 renderBrands();
-renderShowrooms();
+
+// Đọc param ?brand= từ URL (từ trang cardetail chuyển sang), lọc xong nhả luôn như setBrand gốc
+(function applyBrandFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const brandParam = params.get('brand');
+  if (brandParam) {
+    activeBrand = brandParam;
+    renderShowrooms();
+    activeBrand = '';
+    const resultBar = document.querySelector('.result-bar');
+    if (resultBar) {
+      const y = resultBar.getBoundingClientRect().top + window.pageYOffset - 74;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  } else {
+    renderShowrooms();
+  }
+})();
 </script>
 </body>
 </html>
