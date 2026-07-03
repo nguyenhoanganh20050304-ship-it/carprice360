@@ -1,0 +1,518 @@
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #E8002D; --dark: #0F0F1A; --white: #FFFFFF;
+    --gray: #F5F5F7; --text: #1D1D1F; --muted: #6E6E73;
+    --border: #E0E0E5; --blue: rgb(16,137,197);
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--white); color: var(--text); }
+  /* Phần đầu trang (Header) */
+header {
+    background: rgb(16,137,197);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,.15);
+}
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--white);
+    color: rgb(16,137,197);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+}
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -.5px;
+}
+/* Menu điều hướng (Navigation Menu) */
+nav {
+    display: flex;
+    gap: 8px;
+}
+nav a {
+    background: #fff;
+    border: 1.5px solid #E0E0E5;
+    color: #0F0F1A;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    transition: all .25s;
+}
+nav a:hover,
+nav a.active {
+    background: #fff !important;
+    border-color: #0F0F1A !important;
+    color: #0F0F1A !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,.12) !important;
+}
+/* Khu vực thao tác người dùng (User Actions) */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.btn-login {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .25s;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-outline {
+    background: #fff;
+    border: 1.5px solid #E0E0E5;
+    color: #0F0F1A;
+}
+.btn-outline:hover {
+    background: #fff;
+    border-color: #0F0F1A;
+    color: #0F0F1A;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,.12);
+}
+.btn-solid {
+    background: var(--red);
+    border: 1.5px solid var(--red);
+    color: white;
+}
+.btn-solid:hover {
+    background: #c8001f;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(232,0,45,.2);
+}
+  /* Tiêu đề trang (Page Title) */
+.page-title-bar {
+    background: var(--gray);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+}
+.page-title-bar h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--red);
+}
+.page-title-bar p {
+    font-size: 18px;
+    color: var(--dark);
+    margin-top: 4px;
+}
+  /* Khu vực tìm kiếm (Search Section) */
+.search-section {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding: 0 40px;
+    position: relative; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+/* Nút đặt lại tất cả (Reset All Button) */
+.btn-reset-all {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #dddddd;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    height: 100%;
+}
+.btn-reset-all:hover {
+    background: #f5f5f5;
+    border-color: var(--red);
+}
+/* Khung tìm kiếm (Search Input Wrapper) */
+.search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 680px;
+    position: relative;
+}
+/* Khung chứa ô nhập và biểu tượng (Search Field Container) */
+.search-field-container {
+    position: relative;
+    flex: 1;
+}
+.search-input-wrap input {
+    width: 100%;
+    padding: 11px 16px 11px 40px; 
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border .2s;
+    background: white;
+}
+.search-input-wrap input:focus {
+    border-color: var(--red);
+}
+/* Hiệu ứng khi ô tìm kiếm được chọn (Search Input Focus Effect) */
+.search-input-wrap input:placeholder-shown:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(232,0,45,.15);
+    animation: shake-showroom .3s ease-in-out;
+}
+  @keyframes shake-showroom {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  /* Định vị icon kính lúp chuẩn chỉnh bên trong ô input */
+  .search-input-wrap .ico {
+    position: absolute; 
+    left: 14px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    font-size: 15px; 
+    pointer-events: none; 
+    z-index: 2;
+  }
+  /* Nút tìm kiếm màu đỏ */
+  .btn-search-submit {
+    background: var(--red); 
+    color: white; 
+    border: none; 
+    padding: 11px 22px;
+    border-radius: 10px; 
+    font-size: 14px; 
+    font-weight: 600; 
+    cursor: pointer;
+    transition: all 0.2s; 
+    white-space: nowrap;
+    height: 100%;
+  }
+  .btn-search-submit:hover { background: #c8001f; }
+  /* Thương hiệu xe (Car Brands) */
+.brands-section {
+    padding: 0 40px;
+    margin: 40px auto;
+    max-width: 1200px;
+}
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 12px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.brand-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.brand-card:hover {
+    border-color: var(--red);
+    box-shadow: 0 4px 12px rgba(232,0,45,.1);
+    transform: translateY(-2px);
+}
+.brand-card.active {
+    border-color: var(--red);
+    background: #fff5f7;
+    box-shadow: 0 4px 12px rgba(232,0,45,.15);
+}
+.brand-card img {
+    width: 100%;
+    height: 44px;
+    object-fit: contain;
+}
+/* Nội dung chính (Main Content) */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+}
+/* Thanh kết quả và bộ lọc (Results Toolbar) */
+.result-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 0 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+/* Danh sách chọn thành phố (City Select) */
+.city-select {
+    justify-self: end;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    background: white;
+    cursor: pointer;
+    outline: none;
+    transition: border .2s;
+    min-width: 150px;
+}
+.city-select:focus {
+    border-color: var(--red);
+}
+/* Thông tin kết quả (Result Information) */
+.result-info {
+    font-size: 14px;
+    color: var(--muted);
+}
+.result-info span {
+    color: var(--red);
+    font-weight: 700;
+}
+  /* Danh sách showroom (Showroom Grid) */
+.showroom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+.showroom-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .25s;
+}
+.showroom-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.13);
+    border-color: var(--red);
+}
+/* Hình ảnh showroom (Showroom Images) */
+.showroom-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: #eee;
+}
+.showroom-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s;
+}
+.showroom-card:hover .showroom-img-wrap img {
+    transform: scale(1.05);
+}
+.showroom-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,#e8e8ee,#d5d5de);
+}
+/* Nhãn hiển thị (Badges) */
+.badge-brand {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+.badge-city {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,.48);
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+/* Thông tin showroom (Showroom Information) */
+.showroom-body {
+    padding: 14px 16px;
+}
+.showroom-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+}
+/* Trạng thái không có dữ liệu (Empty State) */
+.empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--muted);
+}
+.empty-state .empty-icon {
+    font-size: 60px;
+    margin-bottom: 16px;
+    opacity: .5;
+}
+.empty-state p {
+    font-size: 16px;
+}
+/* Trạng thái tải dữ liệu (Loading State) */
+.loading-state {
+    text-align: center;
+    padding: 60px;
+    color: var(--muted);
+}
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 16px;
+}
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* Hộp thoại (Modal) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+.modal-overlay.open {
+    display: flex;
+}
+.modal {
+    background: white;
+    border-radius: 16px;
+    padding: 36px;
+    width: 420px;
+    max-width: 90vw;
+    box-shadow: 0 24px 80px rgba(0,0,0,.3);
+}
+/* Tiêu đề hộp thoại (Modal Title) */
+.modal h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+/* Ô nhập liệu (Modal Input) */
+.modal-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 12px;
+    outline: none;
+    transition: border .2s;
+}
+.modal-input:focus {
+    border-color: var(--red);
+}
+/* Nút trong hộp thoại (Modal Button) */
+.modal-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: 4px;
+}
+.modal-btn:hover {
+    background: #c8001f;
+}
+/* Nút đóng hộp thoại (Modal Close Button) */
+.modal-close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+    margin-top: -8px;
+}
+/* Chuyển đổi đăng nhập / đăng ký (Modal Switch) */
+.modal-switch {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--muted);
+}
+.modal-switch a {
+    color: var(--red);
+    cursor: pointer;
+    font-weight: 600;
+}
+/* Thông báo trạng thái (Message) */
+.msg {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: none;
+}
+.msg.error {
+    background: #fff0f0;
+    color: #c00;
+    border: 1px solid #fcc;
+    display: block;
+}
+.msg.success {
+    background: #f0fff4;
+    color: #1a7a3a;
+    border: 1px solid #b2dfca;
+    display: block;
+}
+/* Chân trang (Footer) */
+footer {
+    background: var(--dark);
+    color: rgba(255,255,255,.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+}
+footer span {
+    color: var(--red);
+}

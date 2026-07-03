@@ -1,0 +1,443 @@
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #E8002D; --dark: #0F0F1A; --white: #FFFFFF;
+    --gray: #F5F5F7; --text: #1D1D1F; --muted: #6E6E73;
+    --border: #E0E0E5;
+  }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--white); color: var(--text); padding-bottom: 40px; }
+
+
+/* THANH TIÊU ĐỀ (Header)  */
+header { 
+  background: #258cd1; 
+  position: sticky; 
+  top: 0; 
+  z-index: 200; 
+  box-shadow: 0 2px 20px rgba(0,0,0,.1); 
+}
+/* KHUNG HEADER (Header top) ── */
+.header-top { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 0 40px; 
+  height: 56px; 
+}
+
+/* ─KHU VỰC LOGO (Logo area) */
+.logo { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  text-decoration: none; 
+}
+/* icon logo */
+.logo-icon { 
+  width: 32px; 
+  height: 32px; 
+  background: #fff; 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 16px; 
+  font-weight: 900; 
+  color: #258cd1; 
+}
+/* chữ logo */
+.logo-text { 
+  font-size: 18px; 
+  font-weight: 700; 
+  color: white; 
+  letter-spacing: -.5px; 
+}
+
+/* ─THANH MENU (Navigation)  */
+nav { 
+  display: flex; 
+  gap: 10px; 
+}
+/* link menu */
+nav a { 
+  color: #333 !important; 
+  background: #fff; 
+  text-decoration: none; 
+  padding: 7px 16px; 
+  border-radius: 8px; 
+  font-size: 13px; 
+  font-weight: 500; 
+  transition: all .2s; 
+  box-shadow: 0 2px 4px rgba(0,0,0,.05); 
+}
+nav a:hover { 
+  background: #f0f0f0; 
+}
+nav a.active { 
+  background: #e31837 !important; 
+  color: white !important; 
+}
+
+/*  KHU VỰC NÚT (Header actions)  */
+.header-actions { 
+  display: flex; 
+  gap: 10px; 
+}
+/* nút đăng nhập/đăng ký */
+.btn-login { 
+  padding: 7px 18px; 
+  border-radius: 8px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all .2s; 
+  text-decoration: none; 
+}
+.btn-outline { 
+  background: #fff; 
+  border: none; 
+  color: #333 !important; 
+}
+.btn-outline:hover { 
+  background: #f0f0f0; 
+}
+.btn-solid { 
+  background: #e31837; 
+  border: none; 
+  color: white !important; 
+}
+.btn-solid:hover { 
+  background: #c8001f; 
+}
+/* THANH ĐIỀU HƯỚNG (Breadcrumb)  */
+.breadcrumb {
+  padding: 8px 40px;
+  background: var(--gray);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--red);
+}
+.breadcrumb .sep {
+  color: #ccc;
+}
+.breadcrumb .current {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* BỐ CỤC CHÍNH (Main layout)  */
+.detail-wrapper {
+  max-width: 1320px;
+  margin: 20px auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 32px;
+}
+/* KHU VỰC THƯ VIỆN ẢNH (Gallery panel) */
+.gallery-panel {
+  position: sticky;
+  top: 64px;
+}
+.gallery-main {
+  width: 100%;
+  aspect-ratio: 16/8.4;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f0f0f5;
+}
+.gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery-main .img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg,#e8e8ee,#d5d5de);
+}
+/*  KHU VỰC THÔNG TIN (Info panel) */
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* DÒNG THƯƠNG HIỆU (Brand row) */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+.brand-logo-sm {
+  height: 36px;
+  object-fit: contain;
+}
+.city-badge {
+  background: var(--gray);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.showroom-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.25;
+}
+.brand-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 2px;
+}
+  .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+
+  /* Info item (địa chỉ / hotline) */
+  .info-item {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+.info-item .icon {
+    font-size: 22px;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+.info-item .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 4px;
+}
+.info-item .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+}
+.phone-number {
+    color: var(--red);
+    font-size: 19px;
+    font-weight: 800;
+}
+  
+/* PHẦN XE CỦA HÃNG (Car section)  */
+.cars-section {
+  max-width: 1320px;
+  margin: 24px auto 0;
+  padding: 0 40px;
+}
+
+/* TIÊU ĐỀ PHẦN (Section title) */
+.section-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.section-title span {
+  color: var(--red);
+}
+
+/* LƯỚI XE (Car grid) */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* THẺ XE (Car card)  */
+.car-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.12);
+  border-color: var(--red);
+}
+
+/*  ẢNH XE (Car image)*/
+.car-img-wrap {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  background: var(--gray);
+}
+
+.car-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*  NỘI DUNG XE (Car body) */
+.car-body {
+  padding: 14px 16px;
+}
+
+/*  NHÃN HÃNG (Brand tag) */
+.car-brand-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 3px;
+}
+
+/* TÊN XE (Car name)  */
+.car-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+/* GIÁ XE (Car price)  */
+.car-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--red);
+}
+
+/* TRẠNG THÁI LOADING (Loading state) */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+}
+/* SPINNER (Vòng xoay loading) */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+  
+/*  MODAL (Modal / Popup đăng nhập) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 36px;
+  width: 420px;
+  max-width: 90vw;
+  box-shadow: 0 24px 80px rgba(0,0,0,.3);
+}
+.modal h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.modal-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 12px;
+  outline: none;
+  transition: border .2s;
+}
+.modal-input:focus {
+  border-color: var(--red);
+}
+.modal-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: 4px;
+}
+.modal-btn:hover {
+  background: #c8001f;
+}
+.modal-close {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--muted);
+  line-height: 1;
+  margin-top: -8px;
+}
+.modal-switch {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.modal-switch a {
+  color: var(--red);
+  cursor: pointer;
+  font-weight: 600;
+}
+.msg {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: none;
+}
+.msg.error {
+  background: #fff0f0;
+  color: #c00;
+  border: 1px solid #fcc;
+  display: block;
+}
+.msg.success {
+  background: #f0fff4;
+  color: #1a7a3a;
+  border: 1px solid #b2dfca;
+  display: block;
+}
