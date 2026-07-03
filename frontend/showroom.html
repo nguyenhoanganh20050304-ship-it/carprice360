@@ -47,13 +47,30 @@
     justify-content: center; /* Luôn luôn căn giữa cụm tìm kiếm chính */
     align-items: center;
   }
-
+  /* Style cho nút Tất cả */
+    .btn-reset-all {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #dddddd;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    height: 100%;
+  }
+  .btn-reset-all:hover {
+    background: #f5f5f5;
+    border-color:var(--red);
+  }
   /* Bọc toàn bộ ô input + icon + nút tìm kiếm thành 1 cụm cố định ở giữa */
   .search-input-wrap {
     display: flex;
     align-items: center;
     gap: 10px;
-    width: 520px; /* Độ dài thanh tìm kiếm sau khi thu ngắn (bạn tăng giảm tùy ý) */
+    width: 680px;   
     position: relative;
   }
 
@@ -74,7 +91,18 @@
     background: white;
   }
   .search-input-wrap input:focus { border-color: var(--red); }
+  /* Hiệu ứng đỏ và tự động lắc khi ô input trống được focus (hoặc khi bấm nút tìm kiếm trống) */
+  .search-input-wrap input:placeholder-shown:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(232,0,45,.15);
+    animation: shake-showroom .3s ease-in-out;
+  }
 
+  @keyframes shake-showroom {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
   /* Định vị icon kính lúp chuẩn chỉnh bên trong ô input */
   .search-input-wrap .ico {
     position: absolute; 
@@ -238,6 +266,7 @@
     <span class="ico">🔍</span>
     <input type="text" id="searchInput" placeholder="Tìm tên showroom..." oninput="renderShowrooms()">
     <button class="btn-search-submit" onclick="handleSearchSubmit()">Tìm kiếm</button>
+    <button class="btn-reset-all" onclick="resetAllShowrooms()">Tất cả</button>
   </div>
 </div>
 
@@ -296,9 +325,9 @@ let activeCity = '';
 
 const showrooms = [
   { brand:"Audi", name:"Audi Hà Nội", city:"Hà Nội", image:"image/showroom/audi/hanoi/audihanoi.png" },
-  { brand:"Audi", name:"Audi Hồ Chí Minh", city:"TP.HCM", image:"image/showroom/audi/hcm/audihochiminh.png" },
-  { brand:"Audi", name:"Audi Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/audi/hcm/audiphumyhung.png" },
-  { brand:"Audi", name:"Audi Tân Bình", city:"TP.HCM", image:"image/showroom/audi/hcm/auditanbinh.png" },
+  { brand:"Audi", name:"Audi Hồ Chí Minh", city:"TP.HCM", image:"image/showroom/audi/tphcm/audihochiminh.png" },
+  { brand:"Audi", name:"Audi Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/audi/tphcm/audiphumyhung.png" },
+  { brand:"Audi", name:"Audi Tân Bình", city:"TP.HCM", image:"image/showroom/audi/tphcm/auditanbinh.png" },
   { brand:"BMW", name:"BMW Lê Duẩn", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwleduan.png" },
   { brand:"BMW", name:"BMW Lê Văn Lương", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwlevanluong.png" },
   { brand:"BMW", name:"BMW Long Biên", city:"Hà Nội", image:"image/showroom/bmw/hanoi/bmwlongbien.png" },
@@ -408,16 +437,16 @@ const showrooms = [
   { brand:"Toyota", name:"Toyota Thái Hòa Từ Liêm", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathaihoatuliem.png" },
   { brand:"Toyota", name:"Toyota Thăng Long", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathanglong.png" },
   { brand:"Toyota", name:"Toyota Thanh Xuân", city:"Hà Nội", image:"image/showroom/toyota/hanoi/toyotathanhxuan.png" },
-  { brand:"Toyota", name:"Toyota An Sương", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotaansuong.png" },
-  { brand:"Toyota", name:"Toyota Bến Thành", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotabenthanh.png" },
-  { brand:"Toyota", name:"Toyota Bình Dương", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotabinhduong.png" },
-  { brand:"Toyota", name:"Toyota Đông Sài Gòn", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotadongsaigon.png" },
-  { brand:"Toyota", name:"Toyota Lý Thường Kiệt", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotalythuongkiet.png" },
-  { brand:"Toyota", name:"Toyota Vũng Tàu", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotavungtau.png" },
-  { brand:"Toyota", name:"Toyota Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotaphumyhung.png" },
-  { brand:"Toyota", name:"Toyota An Thành", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotaanthanh.png" },
-  { brand:"Toyota", name:"Toyota Nguyễn Văn Lương", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotanguyenvanluong.png" },
-  { brand:"Toyota", name:"Toyota Hùng Vương ", city:"TP.HCM", image:"image/showroom/toyota/hcm/toyotahungvuong.png" },
+  { brand:"Toyota", name:"Toyota An Sương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaansuong.png" },
+  { brand:"Toyota", name:"Toyota Bến Thành", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotabenthanh.png" },
+  { brand:"Toyota", name:"Toyota Bình Dương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotabinhduong.png" },
+  { brand:"Toyota", name:"Toyota Đông Sài Gòn", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotadongsaigon.png" },
+  { brand:"Toyota", name:"Toyota Lý Thường Kiệt", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotalythuongkiet.png" },
+  { brand:"Toyota", name:"Toyota Vũng Tàu", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotavungtau.png" },
+  { brand:"Toyota", name:"Toyota Phú Mỹ Hưng", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaphumyhung.png" },
+  { brand:"Toyota", name:"Toyota An Thành", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotaanthanh.png" },
+  { brand:"Toyota", name:"Toyota Nguyễn Văn Lương", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotanguyenvanluong.png" },
+  { brand:"Toyota", name:"Toyota Hùng Vương ", city:"TP.HCM", image:"image/showroom/toyota/tphcm/toyotahungvuong.png" },
   { brand:"VinFast", name:"VinFast Tây Hồ", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfasttayho.png" },
   { brand:"VinFast", name:"VinFast Thăng Long", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastthanglong.png" },
   { brand:"VinFast", name:"VinFast Mỹ Đình", city:"Hà Nội", image:"image/showroom/vinfast/hanoi/vinfastmydinh.png" },
@@ -655,6 +684,22 @@ renderBrands();
     renderShowrooms();
   }
 })();
+  function resetAllShowrooms() {
+  // 1. Xóa chữ trong ô tìm kiếm
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  
+  // 2. Đưa ô chọn thành phố về mặc định "Tất cả thành phố"
+  const citySelect = document.getElementById('citySelect');
+  if (citySelect) citySelect.value = '';
+  
+  // 3. Reset hoàn toàn các biến lưu bộ lọc trong JS
+  activeBrand = '';
+  activeCity = '';
+  
+  // 4. Chạy lại hàm hiển thị danh sách gốc ban đầu
+  renderShowrooms();
+ }
 </script>
 </body>
 </html>
