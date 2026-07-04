@@ -662,10 +662,7 @@ SELECT
 FROM Cars
 ORDER BY thuong_hieu, gia;
 
-ALTER TABLE Cars 
-ADD hinh_anh NVARCHAR(255) NULL;
-GO
--- ✅ Cập nhật đường dẫn ảnh cho xe hiện có
+-- Cập nhật đường dẫn ảnh cho xe hiện có
 UPDATE Cars SET hinh_anh = N'image/cars/audi/a7/'               WHERE ten_xe = N'Audi A7 Sportback';
 UPDATE Cars SET hinh_anh = N'image/cars/audi/a6/'               WHERE ten_xe = N'Audi A6 45 TFSI';
 UPDATE Cars SET hinh_anh = N'image/cars/audi/a8/'               WHERE ten_xe = N'Audi A8L 55 TFSI';
@@ -674,7 +671,7 @@ UPDATE Cars SET hinh_anh = N'image/cars/audi/e-tron/'           WHERE ten_xe = N
 UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/c300/'    WHERE ten_xe = N'Mercedes C300 AMG';
 UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/e300/'    WHERE ten_xe = N'Mercedes E300 AMG';
 UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/glc300/'  WHERE ten_xe = N'Mercedes GLC 300 4MATIC';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/amg gt/'  WHERE ten_xe = N'Mercedes AMG GT R';
+UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/amg gt r/'  WHERE ten_xe = N'Mercedes AMG GT R';
 UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/maybach s680/' WHERE ten_xe = N'Mercedes-Maybach S680';
 UPDATE Cars SET hinh_anh = N'image/cars/bmw/320/'               WHERE ten_xe = N'BMW 320i Sport Line';
 UPDATE Cars SET hinh_anh = N'image/cars/bmw/430/'               WHERE ten_xe = N'BMW 430i Coupe';
