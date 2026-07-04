@@ -543,9 +543,14 @@ async function blockUser(id, name) {
   try {
     const res = await fetch(`${API}/auth/users/${id}/block`, { method: 'PUT' });
     if (!res.ok) throw new Error();
+    
     showToast(`🚫 Đã khóa tài khoản "${name}"`, 'ok');
+    
+    // Thêm dòng này để cập nhật lại trạng thái giao diện ngay lập tức mà không cần F5
+    loadUsers(); 
+    
   } catch {
-    showToast('❌ Endpoint /api/users/{id}/block chưa được tạo', 'err');
+    showToast('❌ Không thể khóa tài khoản', 'err');
   }
 }
 /* Mở khóa tài khoản (Unblock User) */
@@ -570,16 +575,25 @@ async function unblockUser(id, name) {
 async function deleteUser(id, name) {
   if (!confirm(`Xóa vĩnh viễn tài khoản "${name}"?\nHành động này không thể hoàn tác!`)) return;
   try {
-    const res = await fetch(`${API}/auth/users/${id}`, { method: 'DELETE' });
+    const res = await fetch(`${API}/auth/users/${id}/delete`, { method: 'POST' }); 
+    
+    if (!res.ok) {
+      try {
+        const errorData = await res.json();
+        showToast('❌ ' + (errorData.message || 'Không thể xóa tài khoản này'), 'err');
+      } catch { showToast('❌ Lỗi từ hệ thống server', 'err'); }
+      return;
+    }
+
     const data = await res.json();
-    if (data.success) {
+    if (data && data.success) {
       showToast(`🗑️ Đã xóa tài khoản "${name}"`, 'ok');
       loadUsers();
     } else {
-      showToast('❌ ' + data.message, 'err');
+      showToast('❌ ' + (data.message || 'Xóa thất bại'), 'err');
     }
-  } catch {
-    showToast('❌ Không thể xóa — kiểm tra server', 'err');
+  } catch (error) {
+    showToast('❌ Không thể xóa — kiểm tra kết nối server', 'err');
   }
 }
 /* Thông báo (Toast Notification) */
