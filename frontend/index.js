@@ -28,8 +28,8 @@ const brandLogos = {
 
 // KHỞI TẠO SỰ KIỆN KHI TẢI TRANG
 // Lắng nghe sự kiện cuộn mượt cho nút "Trang chủ" ngay khi đọc file script
-const các_nút_menu = document.querySelectorAll('nav a, header a');
-các_nút_menu.forEach(nut => {
+const buttonMenus = document.querySelectorAll('nav a, header a');
+buttonMenus.forEach(nut => {
   if (nut.textContent.trim() === "Trang chủ") {
     nut.addEventListener('click', function(e) {
       e.preventDefault(); 
