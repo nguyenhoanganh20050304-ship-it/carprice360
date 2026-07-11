@@ -1,16 +1,21 @@
 package com.carprice360.carprice360.controller;
 
 import com.carprice360.carprice360.entity.Car;
+import com.carprice360.carprice360.entity.CarImage;
+import com.carprice360.carprice360.repository.CarImageRepository;
 import com.carprice360.carprice360.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
+
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,10 +25,7 @@ import java.util.Optional;
 public class CarController {
 
     private final CarService carService;
-
-    // Thư mục lưu ảnh, cấu hình trong application.properties
-    @Value("${upload.path:uploads/}")
-    private String uploadPath;
+    private final CarImageRepository carImageRepository;
 
     // GET /api/cars - Lấy tất cả xe
     @GetMapping
@@ -92,67 +94,50 @@ public class CarController {
 
     /**
      * POST /api/cars/{id}/images - Upload 5 ảnh cho xe
-     * Frontend gửi multipart/form-data với các file img1..img5
-     * Ảnh được lưu vào {upload.path}/{brand}/{carName}/1.png .. 5.png
-     * Field hinhAnh của xe được cập nhật thành đường dẫn thư mục đó
+     * Ảnh được lưu trực tiếp vào DB (bảng CarImages) dưới dạng byte[]
+     * @Transactional đảm bảo xóa ảnh cũ + lưu 5 ảnh mới thành công toàn bộ hoặc rollback
      */
+    @Transactional
     @PostMapping("/{id}/images")
     public ResponseEntity<?> uploadImages(
             @PathVariable Integer id,
-            @RequestParam("images") MultipartFile[] images) {
+            @RequestParam("images") MultipartFile[] images) throws IOException {
 
         Optional<Car> carOpt = carService.getCarById(id);
-        if (carOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        if (carOpt.isEmpty()) return ResponseEntity.notFound().build();
         if (images == null || images.length != 5) {
             return ResponseEntity.badRequest().body("Vui lòng upload đúng 5 ảnh");
         }
 
+        carImageRepository.deleteByCarId(id); // xóa ảnh cũ nếu có
+
+        for (int i = 0; i < 5; i++) {
+            CarImage img = new CarImage();
+            img.setCarId(id);
+            img.setImageIndex(i + 1);
+            img.setContentType(images[i].getContentType());
+            img.setImageData(images[i].getBytes());
+            img.setCreatedAt(LocalDateTime.now());
+            carImageRepository.save(img);
+        }
+
+        // Đánh dấu xe đã có ảnh (optional)
         Car car = carOpt.get();
+        car.setHinhAnh("db");
+        carService.addCar(car);
 
-        // Tạo tên thư mục an toàn: chuyển thành chữ thường, thay ký tự đặc biệt
-        String brand = sanitize(car.getThuongHieu());
-        String carName = sanitize(car.getTenXe());
-
-        // Đường dẫn thư mục lưu ảnh
-        String folderPath = uploadPath + brand + "/" + carName + "/";
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-
-        try {
-            for (int i = 0; i < 5; i++) {
-                MultipartFile file = images[i];
-                String extension = getExtension(file.getOriginalFilename());
-                File dest = new File(folder, (i + 1) + "." + extension);
-                file.transferTo(dest);
-            }
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body("Lỗi lưu ảnh: " + e.getMessage());
-        }
-
-        // Lưu đường dẫn thư mục vào DB (dùng relative path cho frontend)
-        // Ví dụ: "image/cars/bmw/320i-sport-line/"
-        String relativePath = "image/cars/" + brand + "/" + carName + "/";
-        car.setHinhAnh(relativePath);
-        Car saved = carService.addCar(car);
-
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(Map.of("success", true, "message", "Đã lưu 5 ảnh vào database"));
     }
 
-    // Chuẩn hóa tên thành folder-safe string
-    private String sanitize(String name) {
-        if (name == null) return "unknown";
-        return name.toLowerCase()
-                .replaceAll("[^a-z0-9 ]", "")   // ← chỉ giữ chữ, số, dấu cách
-                .replaceAll(" {2,}", " ")         // ← nhiều cách liên tiếp → 1 cách
-                .trim();
-    }
-
-    private String getExtension(String filename) {
-        if (filename == null || !filename.contains(".")) return "png";
-        return filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+    // GET /api/cars/{id}/images/{index} - Lấy 1 ảnh theo index
+    @GetMapping("/{id}/images/{index}")
+    public ResponseEntity<byte[]> getImage(
+            @PathVariable Integer id,
+            @PathVariable Integer index) {
+        return carImageRepository.findByCarIdAndImageIndex(id, index)
+                .map(img -> ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(img.getContentType()))
+                        .body(img.getImageData()))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

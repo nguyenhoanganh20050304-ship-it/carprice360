@@ -2,8 +2,10 @@ package com.carprice360.carprice360.service;
 
 import com.carprice360.carprice360.entity.Car;
 import com.carprice360.carprice360.repository.CarRepository;
+import com.carprice360.carprice360.repository.CarImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final CarImageRepository carImageRepository; // THÊM
 
     // Lấy tất cả xe
     public List<Car> getAllCars() {
@@ -87,8 +90,10 @@ public class CarService {
         return carRepository.save(existing);
     }
 
-    // Xóa xe (admin)
+    // Xóa xe (admin) — SỬA: xóa ảnh liên quan trước khi xóa xe
+    @Transactional
     public void deleteCar(Integer id) {
+        carImageRepository.deleteByCarId(id);
         carRepository.deleteById(id);
     }
 }

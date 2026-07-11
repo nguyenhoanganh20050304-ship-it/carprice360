@@ -11,14 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
 
     private final AuthService authService;
-    private final UserRepository userRepository; // Inject thêm UserRepository vào đây để xài ngầm
+    private final UserRepository userRepository;
 
     // POST /api/auth/register
     @PostMapping("/register")
@@ -52,7 +53,6 @@ public class AuthController {
         );
 
         if (user.isPresent()) {
-            // KIỂM TRA: Nếu tài khoản bị khóa (isBlocked = true) thì chặn luôn không cho đăng nhập
             if (Boolean.TRUE.equals(user.get().getIsBlocked())) {
                 response.put("success", false);
                 response.put("message", "Tài khoản của bạn đã bị khóa bởi Admin!");
@@ -72,35 +72,44 @@ public class AuthController {
         }
     }
 
-    // GET /api/auth/api/users -> Đổi lại đường dẫn cho khớp hoàn toàn với cấu trúc Class
+    // GET /api/auth/users
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
-
-        // Xóa mật khẩu đã băm trước khi gửi về Frontend để tăng tính bảo mật
         users.forEach(user -> user.setMatKhau(null));
-
         return ResponseEntity.ok(users);
     }
 
-    // PUT /api/auth/api/users/{id}/block -> Xử lý bật/tắt khóa tài khoản thực tế trong DB
+    // PUT /api/auth/users/{id}/block
     @PutMapping("/users/{id}/block")
     public ResponseEntity<?> blockUser(@PathVariable Integer id) {
         return userRepository.findById(id).map(user -> {
-
-            // Đảo trạng thái: đang false (bình thường) -> true (khóa) và ngược lại
-            user.setIsBlocked(!user.getIsBlocked());
+            user.setIsBlocked(true);
             userRepository.save(user);
-
             return ResponseEntity.ok().body(Map.of(
                     "success", true,
-                    "message", "Đã thay đổi trạng thái khóa tài khoản thành công!",
-                    "currentStatus",user.getIsBlocked()
+                    "message", "Đã khóa tài khoản thành công!",
+                    "currentStatus", true
             ));
         }).orElse(ResponseEntity.notFound().build());
     }
-    // DELETE /api/auth/users/{id}
-    @DeleteMapping("/users/{id}")
+
+    // PUT /api/auth/users/{id}/unblock
+    @PutMapping("/users/{id}/unblock")
+    public ResponseEntity<?> unblockUser(@PathVariable Integer id) {
+        return userRepository.findById(id).map(user -> {
+            user.setIsBlocked(false);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "message", "Đã mở khóa tài khoản thành công!",
+                    "currentStatus", false
+            ));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // POST /api/auth/users/{id}/delete -> THÊM LẠI HÀM NÀY (Dùng POST để tránh lỗi CORS đường DELETE)
+    @PostMapping("/users/{id}/delete")
     public ResponseEntity<?> deleteUser(@PathVariable Integer id) {
         return userRepository.findById(id).map(user -> {
             if ("ADMIN".equals(user.getVaiTro())) {
