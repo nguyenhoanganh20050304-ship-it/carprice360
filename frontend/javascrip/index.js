@@ -201,9 +201,9 @@ async function loadCars() {
   }
 }
 
-// Trả về chuỗi đường dẫn ảnh thứ nhất của xe
+// Trả về chuỗi đường dẫn ảnh
 function getCarImage(car) {
-  return car && car.hinhAnh ? car.hinhAnh + '1.png' : '';
+  return car && car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
 }
 
 // Định dạng tiền tệ từ dạng con số thô sang chuỗi hiển thị tỷ/triệu dễ nhìn

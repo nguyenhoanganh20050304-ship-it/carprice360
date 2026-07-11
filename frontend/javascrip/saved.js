@@ -118,6 +118,10 @@ function getSavedCars() {
     return raw ? JSON.parse(raw) : [];
   } catch { return []; }
 }
+function getCarImage(car, index = 1) {
+  if (!car || !car.id) return '';
+  return `${API}/cars/${car.id}/images/${index}`;
+}
 
 // Xóa một xe khỏi LocalStorage dựa trên ID
 function removeSavedCar(carId) {
@@ -171,7 +175,7 @@ function handleRemove(e, carId, carName) {
 
 // Tạo cấu trúc HTML cho một thẻ xe (Card)
 function renderCard(car) {
-  const imgSrc = car.hinhAnh ? car.hinhAnh + '1.png' : '';
+  const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
   const fuelClass = getFuelClass(car.nhienLieu);
   const fuelIcon = getFuelIcon(car.nhienLieu);
   return `

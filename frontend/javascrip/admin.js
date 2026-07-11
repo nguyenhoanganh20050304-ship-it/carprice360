@@ -8,7 +8,7 @@ let currentHinhAnh = null;
 
 /* Hình ảnh và logo (Images & Brand Logos) */
 function getCarImage(car) {
-  return car && car.hinhAnh ? car.hinhAnh + '1.png' : '';
+  return car && car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
 }
 
 /* Logo thương hiệu (Brand Logos) */
@@ -463,6 +463,10 @@ async function loadLatestUsers() {
   } catch (e) {
     console.error(e);
   }
+}
+function getCarImage(car, index = 1) {
+  if (!car || !car.id) return '';
+  return `${API}/cars/${car.id}/images/${index}`;
 }
 /* Lọc người dùng (Filter Users) */
 function filterUsers() {

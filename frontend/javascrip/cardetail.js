@@ -16,13 +16,16 @@ function restoreSession() {
 }
 
 // lấy hinhAnh trực tiếp từ API
+// SỬA hàm lấy ảnh
 function getCarImage(car, index) {
   if (!car || !car.hinhAnh) return '';
-  return car.hinhAnh + index + '.png';
+  return `${API}/cars/${car.id}/images/${index}`;
 }
+
+// SỬA: đổi từ tên file sang số index
 const TAB_IMAGES = {
-  'ngoai-that': ['1.png', '2.png', '3.png'],
-  'noi-that':   ['4.png', '5.png'],
+  'ngoai-that': [1, 2, 3],
+  'noi-that':   [4, 5],
 };
 /* Hàm hỗ trợ (Helper Functions) */
 function formatPrice(gia) {
@@ -85,7 +88,7 @@ function renderCarDetail(car) {
   document.getElementById('bcName').textContent = car.tenXe;
   document.title = `${car.tenXe} - CarPrice360`;
   const baseImg = (car.hinhAnh || '');
-  const imgSrc = baseImg ? baseImg + '1.png' : '';
+  const imgSrc = getCarImage(car, 1); // thay cho baseImg + '1.png'
   const engineDesc = getEngineDesc(car.maLuc, car.nhienLieu);
   const airbags = car.soTuiKhi;
   const fuelIcon = getFuelIcon(car.nhienLieu);
@@ -285,9 +288,8 @@ function renderDots() {
 function updateGalleryImg() {
   const img = document.getElementById('mainImg');
   if (!img || !currentCar) return;
-  const base = currentCar.hinhAnh || '';
   const list = getImgList();
-  img.src = base + list[currentImgIndex];
+  img.src = getCarImage(currentCar, list[currentImgIndex]); // thay base + list[i]
   renderDots();
 }
 function setImg(i) {

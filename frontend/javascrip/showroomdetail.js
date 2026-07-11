@@ -178,7 +178,10 @@ const brandLogos = {
 };
 
 const brandCarMap = { 'Mercedes-Benz': 'Mercedes' };
-
+function getCarImage(car, index = 1) {
+  if (!car || !car.id) return '';
+  return `${API}/cars/${car.id}/images/${index}`;
+} 
 /*  KHỞI TẠO TRANG (Initialize page) */
 function init() {
   const p = new URLSearchParams(window.location.search);
@@ -236,6 +239,7 @@ function formatPrice(gia) {
 }
 /*  TẢI XE THEO HÃNG (Load cars by brand)  */
 async function loadCarsByBrand(brand) {
+  const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
   const grid = document.getElementById('carGrid');
   const dbBrand = brandCarMap[brand] || brand;
   try {
