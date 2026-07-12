@@ -239,7 +239,6 @@ function formatPrice(gia) {
 }
 /*  TẢI XE THEO HÃNG (Load cars by brand)  */
 async function loadCarsByBrand(brand) {
-  const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
   const grid = document.getElementById('carGrid');
   const dbBrand = brandCarMap[brand] || brand;
   try {
@@ -248,7 +247,7 @@ async function loadCarsByBrand(brand) {
     const filtered = cars.filter(c => c.thuongHieu === dbBrand);
     if (!filtered.length) { grid.innerHTML = '<div class="loading">Chưa có dữ liệu xe</div>'; return; }
     grid.innerHTML = filtered.map(car => {
-      const imgSrc = car.hinhAnh ? car.hinhAnh + '1.png' : '';
+      const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
       return `<div class="car-card" onclick="location.href='cardetail.html?id=${car.id}'">
         <div class="car-img-wrap">${imgSrc ? `<img src="${imgSrc}" alt="${car.tenXe}" onerror="this.style.display='none'">` : ''}</div>
         <div class="car-body">
