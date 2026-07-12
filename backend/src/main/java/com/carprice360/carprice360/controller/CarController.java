@@ -92,11 +92,7 @@ public class CarController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * POST /api/cars/{id}/images - Upload 5 ảnh cho xe
-     * Ảnh được lưu trực tiếp vào DB (bảng CarImages) dưới dạng byte[]
-     * @Transactional đảm bảo xóa ảnh cũ + lưu 5 ảnh mới thành công toàn bộ hoặc rollback
-     */
+
     @Transactional
     @PostMapping("/{id}/images")
     public ResponseEntity<?> uploadImages(
@@ -121,10 +117,7 @@ public class CarController {
             carImageRepository.save(img);
         }
 
-        // Đánh dấu xe đã có ảnh (optional)
-        Car car = carOpt.get();
-        car.setHinhAnh("db");
-        carService.addCar(car);
+
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Đã lưu 5 ảnh vào database"));
     }

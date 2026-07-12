@@ -84,9 +84,6 @@ public class CarService {
         existing.setCuaSoTroi(car.getCuaSoTroi());
         existing.setSmartEntry(car.getSmartEntry());
         existing.setSacKd(car.getSacKd());
-        if (car.getHinhAnh() != null && !car.getHinhAnh().isBlank()) {
-            existing.setHinhAnh(car.getHinhAnh());
-        }
         return carRepository.save(existing);
     }
 

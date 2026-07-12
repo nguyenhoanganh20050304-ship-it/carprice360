@@ -87,6 +87,5 @@ public class Car {
     private LocalDateTime createdAt;
 
 
-    @Column(name = "hinh_anh")
-    private String hinhAnh;
+
 }

@@ -247,7 +247,7 @@ async function loadCarsByBrand(brand) {
     const filtered = cars.filter(c => c.thuongHieu === dbBrand);
     if (!filtered.length) { grid.innerHTML = '<div class="loading">Chưa có dữ liệu xe</div>'; return; }
     grid.innerHTML = filtered.map(car => {
-      const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
+      const imgSrc = car.id? `${API}/cars/${car.id}/images/1` : '';
       return `<div class="car-card" onclick="location.href='cardetail.html?id=${car.id}'">
         <div class="car-img-wrap">${imgSrc ? `<img src="${imgSrc}" alt="${car.tenXe}" onerror="this.style.display='none'">` : ''}</div>
         <div class="car-body">
@@ -259,7 +259,6 @@ async function loadCarsByBrand(brand) {
     }).join('');
   } catch { grid.innerHTML = '<div class="loading">⚠️ Không thể kết nối server</div>'; }
 }
-
 
 /* ── XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ (Auth system) ── */
 

@@ -29,7 +29,7 @@ function logout() {
 
 // Lấy đường dẫn hình ảnh của xe
 function getCarImage(car) {
-  return car && car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
+  return car && car.id ? `${API}/cars/${car.id}/images/1` : '';
 }
 
 // Định dạng giá tiền hiển thị (Triệu / Tỷ)

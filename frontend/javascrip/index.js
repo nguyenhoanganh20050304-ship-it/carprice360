@@ -121,11 +121,6 @@ function handleSearchSubmit() {
     window.scrollTo({ top: y, behavior: 'smooth' });
   }
 
-  // Lọc xong thì nhả các ô lọc về mặc định nhưng vẫn giữ nguyên kết quả đang hiển thị
-  document.getElementById('filterBrand').value = '';
-  document.getElementById('filterType').value = '';
-  document.getElementById('filterFuel').value = '';
-  document.getElementById('filterPrice').value = '';
 }
 
 // Hàm lọc lõi: Tổng hợp điều kiện lọc, thực hiện Sort và gọi hàm Render kết quả
@@ -187,7 +182,6 @@ function filterByBrand(brand) {
 
 
 // TẢI DỮ LIỆU TỪ API VÀ RENDER GIAO DIỆN
-// Lấy danh sách xe gốc từ Backend API khi ứng dụng khởi chạy
 async function loadCars() {
   try {
     const res = await fetch(`${API}/cars`);
@@ -203,7 +197,7 @@ async function loadCars() {
 
 // Trả về chuỗi đường dẫn ảnh
 function getCarImage(car) {
-  return car && car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
+  return car && car.id ? `${API}/cars/${car.id}/images/1` : '';
 }
 
 // Định dạng tiền tệ từ dạng con số thô sang chuỗi hiển thị tỷ/triệu dễ nhìn

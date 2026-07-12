@@ -17,7 +17,6 @@ CREATE TABLE Cars (
     tieu_thu    DECIMAL(5,2)    NOT NULL,
     thuong_hieu NVARCHAR(50)    NOT NULL,
     created_at  DATETIME        DEFAULT GETDATE(),
-    hinh_anh    NVARCHAR(255)   NULL        -- Đường dẫn thư mục ảnh, VD: image/cars/bmw/320/
 );
 GO
 
@@ -662,48 +661,6 @@ SELECT
 FROM Cars
 ORDER BY thuong_hieu, gia;
 
--- Cập nhật đường dẫn ảnh cho xe hiện có
-UPDATE Cars SET hinh_anh = N'image/cars/audi/a7/'               WHERE ten_xe = N'Audi A7 Sportback';
-UPDATE Cars SET hinh_anh = N'image/cars/audi/a6/'               WHERE ten_xe = N'Audi A6 45 TFSI';
-UPDATE Cars SET hinh_anh = N'image/cars/audi/a8/'               WHERE ten_xe = N'Audi A8L 55 TFSI';
-UPDATE Cars SET hinh_anh = N'image/cars/audi/q5/'               WHERE ten_xe = N'Audi Q5';
-UPDATE Cars SET hinh_anh = N'image/cars/audi/e-tron/'           WHERE ten_xe = N'Audi e-tron';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/c300/'    WHERE ten_xe = N'Mercedes C300 AMG';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/e300/'    WHERE ten_xe = N'Mercedes E300 AMG';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/glc300/'  WHERE ten_xe = N'Mercedes GLC 300 4MATIC';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/amg gt r/'  WHERE ten_xe = N'Mercedes AMG GT R';
-UPDATE Cars SET hinh_anh = N'image/cars/mercedes-benz/maybach s680/' WHERE ten_xe = N'Mercedes-Maybach S680';
-UPDATE Cars SET hinh_anh = N'image/cars/bmw/320/'               WHERE ten_xe = N'BMW 320i Sport Line';
-UPDATE Cars SET hinh_anh = N'image/cars/bmw/430/'               WHERE ten_xe = N'BMW 430i Coupe';
-UPDATE Cars SET hinh_anh = N'image/cars/bmw/520/'               WHERE ten_xe = N'BMW 520i Luxury Line';
-UPDATE Cars SET hinh_anh = N'image/cars/bmw/X5/'                WHERE ten_xe = N'BMW X5 xDrive40i';
-UPDATE Cars SET hinh_anh = N'image/cars/bmw/740/'               WHERE ten_xe = N'BMW 740i';
-UPDATE Cars SET hinh_anh = N'image/cars/porsche/911 carrera/'   WHERE ten_xe = N'Porsche 911 Carrera';
-UPDATE Cars SET hinh_anh = N'image/cars/porsche/cayenne/'       WHERE ten_xe = N'Porsche Cayenne';
-UPDATE Cars SET hinh_anh = N'image/cars/porsche/panamera/'      WHERE ten_xe = N'Porsche Panamera';
-UPDATE Cars SET hinh_anh = N'image/cars/porsche/taycan/'        WHERE ten_xe = N'Porsche Taycan';
-UPDATE Cars SET hinh_anh = N'image/cars/toyota/camry 2.5 hev/'  WHERE ten_xe = N'Toyota Camry 2.5 HEV';
-UPDATE Cars SET hinh_anh = N'image/cars/toyota/fortuner legender/' WHERE ten_xe = N'Toyota Fortuner Legender';
-UPDATE Cars SET hinh_anh = N'image/cars/toyota/corolla cross hev/' WHERE ten_xe = N'Toyota Corolla Cross HEV';
-UPDATE Cars SET hinh_anh = N'image/cars/toyota/land cruiser lc300/' WHERE ten_xe = N'Toyota Land Cruiser 300';
-UPDATE Cars SET hinh_anh = N'image/cars/lexus/es 300h/'         WHERE ten_xe = N'Lexus ES300h';
-UPDATE Cars SET hinh_anh = N'image/cars/lexus/rx 350 premium/'  WHERE ten_xe = N'Lexus RX350 Premium';
-UPDATE Cars SET hinh_anh = N'image/cars/lexus/lx 600 f sport/'  WHERE ten_xe = N'Lexus LX600 F Sport';
-UPDATE Cars SET hinh_anh = N'image/cars/lexus/ls500/'           WHERE ten_xe = N'Lexus LS500';
-UPDATE Cars SET hinh_anh = N'image/cars/kia/k3 1.6 premium/'   WHERE ten_xe = N'Kia K3 Premium';
-UPDATE Cars SET hinh_anh = N'image/cars/kia/sportage 1.6 turbo/' WHERE ten_xe = N'Kia Sportage 1.6 Turbo';
-UPDATE Cars SET hinh_anh = N'image/cars/kia/carnival 2.2d signature/' WHERE ten_xe = N'Kia Carnival Signature';
-UPDATE Cars SET hinh_anh = N'image/cars/kia/ev6 gt-line/'       WHERE ten_xe = N'Kia EV6 GT-Line';
-UPDATE Cars SET hinh_anh = N'image/cars/hyundai/accent 1.5 at/' WHERE ten_xe = N'Hyundai Accent 1.5 AT';
-UPDATE Cars SET hinh_anh = N'image/cars/hyundai/santafe hybrid/' WHERE ten_xe = N'Hyundai Santa Fe Hybrid';
-UPDATE Cars SET hinh_anh = N'image/cars/hyundai/ioniq 6/'       WHERE ten_xe = N'Hyundai IONIQ 6';
-UPDATE Cars SET hinh_anh = N'image/cars/ford/ranger wildtrak 2.0l 4x4 at/' WHERE ten_xe = N'Ford Ranger Wildtrak';
-UPDATE Cars SET hinh_anh = N'image/cars/ford/everest titanium 2.0l at 4x2/' WHERE ten_xe = N'Ford Everest Titanium';
-UPDATE Cars SET hinh_anh = N'image/cars/ford/mustang mach-e/'   WHERE ten_xe = N'Ford Mustang Mach-E';
-UPDATE Cars SET hinh_anh = N'image/cars/vinfast/vf e34/'        WHERE ten_xe = N'VinFast VF e34';
-UPDATE Cars SET hinh_anh = N'image/cars/vinfast/vf7 plus/'      WHERE ten_xe = N'VinFast VF 7 Plus';
-UPDATE Cars SET hinh_anh = N'image/cars/vinfast/vf8 plus/'      WHERE ten_xe = N'VinFast VF 8 Plus';
-GO
 
 -- Kiem tra du lieu
 SELECT COUNT(*) AS tong_so_xe FROM Cars;
@@ -718,5 +675,5 @@ SELECT*
 FROM Users
 GO
 
---xóa tk 
---DELETE FROM Users
+select *
+from Cars

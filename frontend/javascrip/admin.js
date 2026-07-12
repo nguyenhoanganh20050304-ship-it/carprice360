@@ -8,7 +8,7 @@ let currentHinhAnh = null;
 
 /* Hình ảnh và logo (Images & Brand Logos) */
 function getCarImage(car) {
-  return car && car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
+  return car && car.id ? `${API}/cars/${car.id}/images/1` : '';
 }
 
 /* Logo thương hiệu (Brand Logos) */
@@ -215,7 +215,7 @@ function openCarModal(carId) {
   if (carId) {
     const car = allCars.find(c => c.id === carId);
     if (!car) return;
-     currentHinhAnh = car.hinhAnh || null;  
+     currentHinhAnh = car.id || null;  
     setField('tenXe', car.tenXe);
     setField('thuongHieu', car.thuongHieu);
     setField('loaiXe', car.loaiXe);

@@ -175,7 +175,7 @@ function handleRemove(e, carId, carName) {
 
 // Tạo cấu trúc HTML cho một thẻ xe (Card)
 function renderCard(car) {
-  const imgSrc = car.hinhAnh ? `${API}/cars/${car.id}/images/1` : '';
+  const imgSrc = car.id ? `${API}/cars/${car.id}/images/1` : '';
   const fuelClass = getFuelClass(car.nhienLieu);
   const fuelIcon = getFuelIcon(car.nhienLieu);
   return `

@@ -15,10 +15,10 @@ function restoreSession() {
   }
 }
 
-// lấy hinhAnh trực tiếp từ API
+
 // SỬA hàm lấy ảnh
 function getCarImage(car, index) {
-  if (!car || !car.hinhAnh) return '';
+  if (!car || !car.id) return '';
   return `${API}/cars/${car.id}/images/${index}`;
 }
 
@@ -87,7 +87,7 @@ function renderCarDetail(car) {
     `<a href="index.html" style="color:var(--muted);text-decoration:none">${car.thuongHieu}</a>`;
   document.getElementById('bcName').textContent = car.tenXe;
   document.title = `${car.tenXe} - CarPrice360`;
-  const baseImg = (car.hinhAnh || '');
+  const baseImg = (car.id || '');
   const imgSrc = getCarImage(car, 1); // thay cho baseImg + '1.png'
   const engineDesc = getEngineDesc(car.maLuc, car.nhienLieu);
   const airbags = car.soTuiKhi;
@@ -255,9 +255,9 @@ async function loadSimilarCars(car) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">Không có xe tương tự</div>';
       return;
     }
-    grid.innerHTML = cars.map(c => `
+  grid.innerHTML = cars.map(c => `
       <div class="car-card-sm" onclick="location.href='cardetail.html?id=${c.id}'">
-        <img src="${(c.hinhAnh || '') + '1.png'}"
+        <img src="${getCarImage(c, 1)}"
              alt="${c.tenXe}"
              onerror="this.style.fontSize='48px';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.alt='🚗'">
         <div class="cc-body">
