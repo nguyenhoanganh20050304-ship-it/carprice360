@@ -27,6 +27,7 @@ CREATE TABLE Users (
     email           NVARCHAR(100)   NOT NULL UNIQUE,
     mat_khau        NVARCHAR(255)   NOT NULL,
     vai_tro         NVARCHAR(20)    NOT NULL DEFAULT 'USER',
+	is_blocked BIT DEFAULT 0,
     created_at      DATETIME        DEFAULT GETDATE()
 );
 GO
@@ -42,6 +43,15 @@ CREATE TABLE Favorites (
 );
 GO
 
+CREATE TABLE CarImages (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    car_id INT NOT NULL,
+    image_index INT NOT NULL,
+    content_type VARCHAR(100) NULL,
+    image_data VARBINARY(MAX) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (car_id) REFERENCES Cars(id)
+);
 -
 -- INSERT du lieu xe
 
