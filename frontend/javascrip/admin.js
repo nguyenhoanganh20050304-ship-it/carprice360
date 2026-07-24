@@ -322,6 +322,7 @@ if(imageFiles.length > 0 &&
     const method = editingCarId ? 'PUT' : 'POST';
     const res = await fetch(url, {
       method,
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
@@ -336,6 +337,7 @@ if(imageFiles.length > 0 &&
       }
       const uploadRes = await fetch(`${API}/cars/${savedCar.id}/images`, {
         method: 'POST',
+        credentials: 'include',
         body: formData
       });
       if (!uploadRes.ok) {
@@ -355,7 +357,7 @@ if(imageFiles.length > 0 &&
 function confirmDeleteCar(id, name) {
   pendingAction = async () => {
     try {
-      const res = await fetch(`${API}/cars/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API}/cars/${id}`, { method: 'DELETE', credentials: 'include' });
       if (!res.ok) throw new Error();
       closeConfirm();
       await loadCars();
@@ -545,7 +547,7 @@ function renderUsersTable() {
 async function blockUser(id, name) {
   if (!confirm(`Khóa tài khoản của "${name}"?`)) return;
   try {
-    const res = await fetch(`${API}/auth/users/${id}/block`, { method: 'PUT' });
+    const res = await fetch(`${API}/auth/users/${id}/block`, { method: 'PUT', credentials: 'include' });
     if (!res.ok) throw new Error();
     
     showToast(`🚫 Đã khóa tài khoản "${name}"`, 'ok');
@@ -563,7 +565,8 @@ async function unblockUser(id, name) {
 
   try {
     const res = await fetch(`${API}/auth/users/${id}/unblock`, {
-      method: 'PUT'
+      method: 'PUT',
+      credentials: 'include'
     });
 
     if (!res.ok) throw new Error();
@@ -579,7 +582,7 @@ async function unblockUser(id, name) {
 async function deleteUser(id, name) {
   if (!confirm(`Xóa vĩnh viễn tài khoản "${name}"?\nHành động này không thể hoàn tác!`)) return;
   try {
-    const res = await fetch(`${API}/auth/users/${id}/delete`, { method: 'POST' }); 
+    const res = await fetch(`${API}/auth/users/${id}/delete`, { method: 'POST', credentials: 'include' }); 
     
     if (!res.ok) {
       try {

@@ -15,7 +15,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://127.0.0.1:5500",
+        "http://localhost:5500", "http://localhost:5501"},
+        allowedHeaders = "*", allowCredentials = "true")
 public class AuthController {
 
     private final AuthService authService;
