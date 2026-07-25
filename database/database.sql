@@ -684,6 +684,6 @@ GO
 SELECT*
 FROM Users
 GO
-
+UPDATE Cars SET thuong_hieu = N'Mercedes-Benz' WHERE thuong_hieu = N'Mercedes'
 select *
 from Cars
