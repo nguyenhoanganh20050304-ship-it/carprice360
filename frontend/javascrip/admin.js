@@ -19,7 +19,7 @@ const brandLogos = {
   'Hyundai':  'image/cars/hyundai/logo/logo-hyundai.png',
   'Kia':      'image/cars/kia/logo/logo-kia.png',
   'Lexus':    'image/cars/lexus/logo/logo-lexus.png',
-  'Mercedes': 'image/cars/mercedes-benz/logo/logo-mercedes-benz.png',
+  'Mercedes-Benz': 'image/cars/mercedes-benz/logo/logo-mercedes-benz.png',
   'Porsche':  'image/cars/porsche/logo/logo-porsche.png',
   'Toyota':   'image/cars/toyota/logo/logo-toyota.png',
   'VinFast':  'image/cars/vinFast/logo/logo-vinfast.png',

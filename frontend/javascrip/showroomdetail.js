@@ -177,7 +177,7 @@ const brandLogos = {
   'VinFast':      'image/cars/vinFast/logo/logo-vinfast.png',
 };
 
-const brandCarMap = { 'Mercedes-Benz': 'Mercedes' };
+const brandCarMap = {};
 function getCarImage(car, index = 1) {
   if (!car || !car.id) return '';
   return `${API}/cars/${car.id}/images/${index}`;

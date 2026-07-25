@@ -344,8 +344,7 @@ function scrollToTab(section) {
 function goShowroom() {
   if (!currentCar) return;
   // Map brand từ car API → brand trong showroom (Mercedes đặc biệt)
-  const brandMap = { 'Mercedes': 'Mercedes-Benz' };
-  const brand = brandMap[currentCar.thuongHieu] || currentCar.thuongHieu;
+  const brand = currentCar.thuongHieu;
   window.location.href = 'showroom.html?brand=' + encodeURIComponent(brand);
 }
 /* Quản lý xe yêu thích (Favorite Cars) */
