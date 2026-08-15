@@ -60,7 +60,7 @@ git clone https://github.com/nguyenhoanganh20050304-ship-it/carprice360.git
 - Trỏ tới đường dẫn vừa copy ở trên, chọn file `carprice360.bak` → OK.
 - Bảng **Backup media** hiện ra đường dẫn file → chọn nó → OK để bắt đầu restore.
 - Đợi SSMS restore xong (thanh tiến trình hoàn tất là được).
-
+CHÚ Ý: Chỉ cần chạy file backup là có cơ sở dữ liệu mẫu không cần tạo cơ sở dữ liệu.
 ### 2.6. Tạo tài khoản riêng cho backend
 - Trong SSMS, chọn **New Query** và chạy lần lượt các câu lệnh sau:
 
